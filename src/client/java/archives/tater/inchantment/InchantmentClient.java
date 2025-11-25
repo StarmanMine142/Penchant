@@ -3,7 +3,7 @@ package archives.tater.inchantment;
 import net.fabricmc.api.ClientModInitializer;
 
 public class InchantmentClient implements ClientModInitializer {
-//    private static KeyMapping keybind(Identifier id, int key, KeyMapping.Category category) {
+//    private static KeyMapping keybind(ResourceLocation id, int key, KeyMapping.Category category) {
 //        return KeyBindingHelper.registerKeyBinding(new KeyMapping(makeDescriptionId("key", id), Type.KEYSYM, key, category));
 //    }
 //
