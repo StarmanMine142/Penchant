@@ -1,0 +1,83 @@
+package archives.tater.inchantment.mixin;
+
+import archives.tater.inchantment.EnchantmentProgress;
+import archives.tater.inchantment.Inchantment;
+
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments.Mutable;
+
+import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import org.jetbrains.annotations.NotNull;
+
+@Mixin(AnvilMenu.class)
+public abstract class AnvilMenuMixin {
+    @Inject(
+            method = "createResult",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getEnchantmentsForCrafting(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/enchantment/ItemEnchantments;", ordinal = 0)
+    )
+    private void saveProgress(CallbackInfo ci, @Share("progress") LocalRef<Object2IntOpenHashMap<Holder<@NotNull Enchantment>>> progress, @Local(ordinal = 1) ItemStack result, @Local(ordinal = 2) ItemStack sacrifice) {
+        if (!result.has(DataComponents.STORED_ENCHANTMENTS) && !sacrifice.has(DataComponents.STORED_ENCHANTMENTS))
+            progress.set(result.getOrDefault(Inchantment.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY).progress().clone());
+    }
+
+    @Expression("? + 1")
+    @ModifyExpressionValue(
+            method = "createResult",
+            at = @At("MIXINEXTRAS:EXPRESSION")
+    )
+    private int noIncreasePair(int original) {
+        return original - 1;
+    }
+
+    @WrapOperation(
+            method = "createResult",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments$Mutable;set(Lnet/minecraft/core/Holder;I)V")
+    )
+    private void sumProgress(Mutable instance, Holder<Enchantment> enchantment, int level, Operation<Void> original, @Share("progress") LocalRef<Object2IntOpenHashMap<Holder<@NotNull Enchantment>>> progressRef, @Local(ordinal = 2) ItemStack sacrifice, @Local Entry<Holder<Enchantment>> entry) {
+        var progress = progressRef.get();
+        if (progress == null) {
+            original.call(instance, enchantment, level);
+            return;
+        }
+        var inputLevel = instance.getLevel(enchantment);
+        var sacrificeLevel = entry.getIntValue();
+        var sacrificeProgress = sacrifice.getOrDefault(Inchantment.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY).progress().getInt(enchantment);
+        if (sacrificeLevel == inputLevel) {
+            progress.merge(enchantment, sacrificeProgress, Integer::sum);
+        } else if (sacrificeLevel > inputLevel)
+            progress.put(enchantment, sacrificeProgress);
+
+        original.call(instance, enchantment, level);
+    }
+
+    @WrapOperation(
+            method = "createResult",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments$Mutable;toImmutable()Lnet/minecraft/world/item/enchantment/ItemEnchantments;")
+    )
+    private ItemEnchantments setProgress(Mutable instance, Operation<ItemEnchantments> original, @Share("progress") LocalRef<Object2IntOpenHashMap<Holder<@NotNull Enchantment>>> progressRef, @Local(ordinal = 1) ItemStack result) {
+        var progress = progressRef.get();
+        if (progress != null) {
+            result.set(Inchantment.ENCHANTMENT_PROGRESS, new EnchantmentProgress(progress));
+            EnchantmentProgress.updateEnchantments(progress, instance);
+        }
+        return original.call(instance);
+    }
+}

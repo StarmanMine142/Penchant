@@ -70,15 +70,8 @@ public record EnchantmentProgress(Object2IntOpenHashMap<Holder<@NotNull Enchantm
         stack.set(Inchantment.ENCHANTMENT_PROGRESS, new EnchantmentProgress(newProgress));
     }
 
-    /**
-     * Levels up any necessary enchantments
-     *
-     * @param progress is mutated
-     * @param stack    is mutated
-     * @param user
-     */
-    public static void updateEnchantments(Object2IntOpenHashMap<Holder<@NotNull Enchantment>> progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
-        ItemEnchantments.Mutable newEnchantments = null;
+    public static boolean updateEnchantments(Object2IntOpenHashMap<Holder<@NotNull Enchantment>> progress, ItemEnchantments.Mutable enchantments) {
+        boolean changed = false;
 
         for (var enchantment : enchantments.keySet()) {
             var level = enchantments.getLevel(enchantment);
@@ -101,13 +94,25 @@ public record EnchantmentProgress(Object2IntOpenHashMap<Holder<@NotNull Enchantm
 
             if (level == enchantments.getLevel(enchantment)) continue;
 
-            if (newEnchantments == null)
-                newEnchantments = new ItemEnchantments.Mutable(enchantments);
+            enchantments.set(enchantment, level);
 
-            newEnchantments.set(enchantment, level);
+            changed = true;
         }
 
-        if (newEnchantments != null) {
+        return changed;
+    }
+
+    /**
+     * Levels up any necessary enchantments
+     *
+     * @param progress is mutated
+     * @param stack    is mutated
+     * @param user
+     */
+    public static void updateEnchantments(Object2IntOpenHashMap<Holder<@NotNull Enchantment>> progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
+        ItemEnchantments.Mutable newEnchantments = new ItemEnchantments.Mutable(enchantments);
+
+        if (updateEnchantments(progress, new ItemEnchantments.Mutable(enchantments))) {
             stack.set(DataComponents.ENCHANTMENTS, newEnchantments.toImmutable());
             if (user != null)
                 user.level().playSound(null, user, SoundEvents.ENCHANTMENT_TABLE_USE, user.getSoundSource(), 1, user.getRandom().nextFloat() * 0.1F + 0.9F);
