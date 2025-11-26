@@ -30,4 +30,12 @@ public abstract class ItemStackMixin {
     private static void bookLevelOne(Mutable instance, Holder<Enchantment> enchantment, int level, Operation<Void> original) {
         instance.set(enchantment, 1);
     }
+
+//    @ModifyExpressionValue(
+//            method = "isEnchantable",
+//            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments;isEmpty()Z")
+//    )
+//    private boolean allowReenchant(boolean original) {
+//        return true;
+//    }
 }
