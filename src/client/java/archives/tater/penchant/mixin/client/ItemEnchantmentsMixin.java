@@ -9,6 +9,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,11 +31,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
+@Debug(export = true)
 @Mixin(ItemEnchantments.class)
 public class ItemEnchantmentsMixin {
     @Shadow
     @Final
-    private Object2IntOpenHashMap<Holder<Enchantment>> enchantments;
+    Object2IntOpenHashMap<Holder<Enchantment>> enchantments;
 
     @Inject(
             method = "addToTooltip",
@@ -63,8 +65,8 @@ public class ItemEnchantmentsMixin {
     private <T> void addProgress(Consumer<T> instance, T text, Operation<Void> original, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantment, @Share("level") LocalIntRef level, @Share("progress") LocalRef<EnchantmentProgress> progress) {
         original.call(instance, text);
 
+        if (enchantment.get() == null) return;
         if (!PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
-
         if (!EnchantmentProgress.shouldShowTooltip(enchantment.get())) return;
 
         original.call(instance, PenchantClient.getProgressTooltip(progress.get(), enchantment.get(), level.get()));
@@ -74,8 +76,8 @@ public class ItemEnchantmentsMixin {
             method = "addToTooltip",
             at = @At("TAIL")
     )
-    private void addHint(TooltipContext context, Consumer<Component> tooltipAdder, TooltipFlag flag, DataComponentGetter componentGetter, CallbackInfo ci) {
-        if (enchantments.isEmpty() || PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
+    private void addHint(TooltipContext context, Consumer<Component> tooltipAdder, TooltipFlag flag, DataComponentGetter componentGetter, CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress> progress) {
+        if (progress.get() == null || enchantments.isEmpty() || PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
 
         tooltipAdder.accept(PenchantClient.getProgressKeyHint());
     }
