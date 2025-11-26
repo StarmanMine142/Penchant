@@ -37,7 +37,11 @@ public class PenchantClient implements ClientModInitializer {
 
     public static Component getProgressTooltip(EnchantmentProgress progress, Holder<@NotNull Enchantment> enchantment, int level) {
         if (level >= enchantment.value().getMaxLevel())
-            return Component.translatable("penchant.tooltip.progress.max").withStyle(ChatFormatting.DARK_GRAY);
+            return Component.literal("  ")
+                    .append(FontProgressBar.getBar(BAR_WIDTH, BAR_WIDTH))
+                    .append(" ")
+                    .append(Component.translatable("penchant.tooltip.progress.max"))
+                    .withStyle(ChatFormatting.LIGHT_PURPLE);
 
         var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, level);
 

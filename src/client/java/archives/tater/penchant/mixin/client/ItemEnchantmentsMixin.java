@@ -9,7 +9,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,12 +25,17 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 @Mixin(ItemEnchantments.class)
 public class ItemEnchantmentsMixin {
+    @Shadow
+    @Final
+    private Object2IntOpenHashMap<Holder<Enchantment>> enchantments;
+
     @Inject(
             method = "addToTooltip",
             at = @At("HEAD")
@@ -68,7 +75,7 @@ public class ItemEnchantmentsMixin {
             at = @At("TAIL")
     )
     private void addHint(TooltipContext context, Consumer<Component> tooltipAdder, TooltipFlag flag, DataComponentGetter componentGetter, CallbackInfo ci) {
-        if (PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
+        if (enchantments.isEmpty() || PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
 
         tooltipAdder.accept(PenchantClient.getProgressKeyHint());
     }
