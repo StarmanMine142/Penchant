@@ -1,4 +1,4 @@
-package archives.tater.inchantment;
+package archives.tater.penchant;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
@@ -86,8 +86,8 @@ public class EnchantmentProgress {
     }
     public Component getTooltip(Holder<@NotNull Enchantment> enchantment, int level) {
         return (level >= enchantment.value().getMaxLevel()
-                ? Component.translatable("inchantment.tooltip.progress.max")
-                : Component.translatable("inchantment.tooltip.progress",
+                ? Component.translatable("penchant.tooltip.progress.max")
+                : Component.translatable("penchant.tooltip.progress",
                 progress.getInt(enchantment),
                 getMaxProgress(enchantment, level)
         ))
@@ -117,7 +117,7 @@ public class EnchantmentProgress {
         var enchantments = stack.getEnchantments();
         if (enchantments.isEmpty()) return;
 
-        var newProgress = stack.getOrDefault(Inchantment.ENCHANTMENT_PROGRESS, EMPTY).toMutable();
+        var newProgress = stack.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EMPTY).toMutable();
 
         // Increment all enchantments
         for (var enchantment : enchantments.keySet())
@@ -125,7 +125,7 @@ public class EnchantmentProgress {
 
         updateEnchantments(newProgress, stack.getEnchantments(), stack, user);
 
-        stack.set(Inchantment.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
+        stack.set(Penchant.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
     }
 
     public static boolean updateEnchantments(EnchantmentProgress.Mutable progress, ItemEnchantments.Mutable enchantments) {

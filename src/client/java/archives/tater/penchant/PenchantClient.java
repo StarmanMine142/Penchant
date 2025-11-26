@@ -1,17 +1,17 @@
-package archives.tater.inchantment;
+package archives.tater.penchant;
 
 import net.fabricmc.api.ClientModInitializer;
 
-public class InchantmentClient implements ClientModInitializer {
+public class PenchantClient implements ClientModInitializer {
 //    private static KeyMapping keybind(ResourceLocation id, int key, KeyMapping.Category category) {
 //        return KeyBindingHelper.registerKeyBinding(new KeyMapping(makeDescriptionId("key", id), Type.KEYSYM, key, category));
 //    }
 //
-//    private static final KeyMapping.Category INCHANTMENT_CATEGORY = KeyMapping.Category.register(Inchantment.id(Inchantment.MOD_ID));
+//    private static final KeyMapping.Category PENCHANT_CATEGORY = KeyMapping.Category.register(Penchant.id(Penchant.MOD_ID));
 //    public static final KeyMapping SHOW_PROGRESS_KEYBIND = keybind(
-//            Inchantment.id("show_progress"),
+//            Penchant.id("show_progress"),
 //            InputConstants.KEY_LSHIFT,
-//            INCHANTMENT_CATEGORY
+//            PENCHANT_CATEGORY
 //    );
 
 	@Override

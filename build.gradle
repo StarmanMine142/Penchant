@@ -26,7 +26,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"inchantment" {
+		"penchant" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}

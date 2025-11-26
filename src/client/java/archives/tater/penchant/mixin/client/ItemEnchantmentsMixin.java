@@ -1,7 +1,7 @@
-package archives.tater.inchantment.mixin.client;
+package archives.tater.penchant.mixin.client;
 
-import archives.tater.inchantment.EnchantmentProgress;
-import archives.tater.inchantment.Inchantment;
+import archives.tater.penchant.EnchantmentProgress;
+import archives.tater.penchant.Penchant;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -33,7 +33,7 @@ public class ItemEnchantmentsMixin {
             at = @At("HEAD")
     )
     private void getProgress(TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter, CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress> progress, @Share("isStored") LocalBooleanRef isStored) {
-        progress.set(dataComponentGetter.getOrDefault(Inchantment.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY));
+        progress.set(dataComponentGetter.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY));
         isStored.set(dataComponentGetter.get(DataComponents.STORED_ENCHANTMENTS) != null);
     }
 
@@ -43,7 +43,7 @@ public class ItemEnchantmentsMixin {
     )
     private Component addProgress(Holder<@NotNull Enchantment> holder, int i, Operation<Component> original, @Share("progress") LocalRef<EnchantmentProgress> progress, @Share("isStored") LocalBooleanRef isStored) {
         if (isStored.get()) {
-            return Inchantment.getName(holder);
+            return Penchant.getName(holder);
         }
 
         var originalResult = original.call(holder, i);

@@ -1,4 +1,4 @@
-package archives.tater.inchantment;
+package archives.tater.penchant;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -19,8 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Inchantment implements ModInitializer {
-	public static final String MOD_ID = "inchantment";
+public class Penchant implements ModInitializer {
+	public static final String MOD_ID = "penchant";
 
     public static ResourceLocation id(String namespace, String path) {
         return ResourceLocation.fromNamespaceAndPath(namespace, path);

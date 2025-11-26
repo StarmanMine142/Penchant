@@ -1,4 +1,4 @@
-package archives.tater.inchantment.mixin;
+package archives.tater.penchant.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 

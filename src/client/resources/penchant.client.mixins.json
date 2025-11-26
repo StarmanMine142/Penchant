@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "archives.tater.inchantment.mixin.client",
+  "package": "archives.tater.penchant.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
   ],

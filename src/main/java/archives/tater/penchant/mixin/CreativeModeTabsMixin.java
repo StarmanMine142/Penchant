@@ -1,4 +1,4 @@
-package archives.tater.inchantment.mixin;
+package archives.tater.penchant.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
