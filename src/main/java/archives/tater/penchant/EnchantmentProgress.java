@@ -3,9 +3,11 @@ package archives.tater.penchant;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -112,11 +114,14 @@ public class EnchantmentProgress {
         for (var enchantment : enchantments.keySet())
             newProgress.addProgress(enchantment, 1);
 
-        updateEnchantments(newProgress, stack.getEnchantments(), stack, user);
+        updateEnchantmentsForEntity(newProgress, stack.getEnchantments(), stack, user);
 
         stack.set(Penchant.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
     }
 
+    /**
+     * Levels up any necessary enchantments
+     */
     public static boolean updateEnchantments(EnchantmentProgress.Mutable progress, ItemEnchantments.Mutable enchantments) {
         boolean changed = false;
 
@@ -150,19 +155,20 @@ public class EnchantmentProgress {
     }
 
     /**
-     * Levels up any necessary enchantments
+     * Levels up any necessary enchantments and if so plays effects
      *
-     * @param progress is mutated
-     * @param stack    is mutated
-     * @param user
+     * @param stack is mutated
      */
-    public static void updateEnchantments(EnchantmentProgress.Mutable progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
+    public static void updateEnchantmentsForEntity(EnchantmentProgress.Mutable progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
         ItemEnchantments.Mutable newEnchantments = new ItemEnchantments.Mutable(enchantments);
 
-        if (updateEnchantments(progress, newEnchantments)) {
-            stack.set(DataComponents.ENCHANTMENTS, newEnchantments.toImmutable());
-            if (user != null)
-                user.level().playSound(null, user, SoundEvents.ENCHANTMENT_TABLE_USE, user.getSoundSource(), 1, user.getRandom().nextFloat() * 0.1F + 0.9F);
-        }
+        if (!updateEnchantments(progress, newEnchantments)) return;
+        stack.set(DataComponents.ENCHANTMENTS, newEnchantments.toImmutable());
+
+        if (user == null) return;
+        user.level().playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, user.getSoundSource(), 1, user.getRandom().nextFloat() * 0.1F + 0.9F);
+
+        if (!(user.level() instanceof ServerLevel serverLevel)) return;
+        serverLevel.sendParticles(ParticleTypes.ENCHANT, user.getX(), user.getEyeY(), user.getZ(), 16, 0, 0, 0, 1.0);
     }
 }
