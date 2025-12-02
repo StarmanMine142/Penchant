@@ -1,0 +1,17 @@
+{
+  "pack": {
+    "description": {
+      "translate": "dataPack.penchant.durability_rework.description"
+    },
+    "min_format": 88,
+    "max_format": 88
+  },
+  "filter": {
+    "block": [
+      {
+        "namespace": "minecraft",
+        "path": "enchantment/mending\\.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+package archives.tater.penchant.datagen;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.LevelBasedValue;
+import net.minecraft.world.item.enchantment.effects.RemoveBinomial;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+public class DurabilityEnchantmentGenerator extends FabricDynamicRegistryProvider {
+
+    public DurabilityEnchantmentGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture);
+    }
+
+    @Override
+    protected void configure(HolderLookup.Provider registries, Entries entries) {
+        var items = registries.lookupOrThrow(Registries.ITEM);
+        entries.add(Enchantments.UNBREAKING, new Enchantment.Builder(new Enchantment.EnchantmentDefinition(
+                items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
+                Optional.empty(),
+                5,
+                5,
+                new Enchantment.Cost(5, 8),
+                new Enchantment.Cost(35, 8),
+                1,
+                List.of(EquipmentSlotGroup.ANY)
+        ))
+                .withEffect(EnchantmentEffectComponents.ITEM_DAMAGE,
+                        new RemoveBinomial(new LevelBasedValue.Fraction(
+                                LevelBasedValue.perLevel(0, 1),
+                                LevelBasedValue.constant(4)
+                        ))
+                )
+                .build(Enchantments.UNBREAKING.location())
+        );
+    }
+
+    @Override
+    public String getName() {
+        return "Enchantments";
+    }
+}
