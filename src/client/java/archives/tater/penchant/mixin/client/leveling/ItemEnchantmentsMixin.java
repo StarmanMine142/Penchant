@@ -3,6 +3,7 @@ package archives.tater.penchant.mixin.client.leveling;
 import archives.tater.penchant.EnchantmentProgress;
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.PenchantClient;
+import archives.tater.penchant.PenchantEnchantmentTags;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -52,6 +53,7 @@ public class ItemEnchantmentsMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;")
     )
     private Component hideLevel(Holder<@NotNull Enchantment> holder, int i, Operation<Component> original, @Share("progress") LocalRef<EnchantmentProgress> progress, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level) {
+        if (holder.is(PenchantEnchantmentTags.NO_LEVELING)) return original.call(holder, i);
         if (progress.get() == null) return Penchant.getName(holder);
         enchantmentShare.set(holder);
         level.set(i);

@@ -2,6 +2,7 @@ package archives.tater.penchant.mixin.leveling;
 
 import archives.tater.penchant.EnchantmentProgress;
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.PenchantEnchantmentTags;
 
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -40,8 +41,8 @@ public abstract class AnvilMenuMixin {
             method = "createResult",
             at = @At("MIXINEXTRAS:EXPRESSION")
     )
-    private int noIncreasePair(int original) {
-        return original - 1;
+    private int noIncreasePair(int original, @Local Holder<Enchantment> enchantment) {
+        return enchantment.is(PenchantEnchantmentTags.NO_LEVELING) ? original : original - 1;
     }
 
     @WrapOperation(
@@ -50,7 +51,7 @@ public abstract class AnvilMenuMixin {
     )
     private void sumProgress(ItemEnchantments.Mutable instance, Holder<Enchantment> enchantment, int level, Operation<Void> original, @Share("progress") LocalRef<EnchantmentProgress.Mutable> progressRef, @Local(ordinal = 2) ItemStack sacrifice, @Local Entry<Holder<Enchantment>> entry) {
         var progress = progressRef.get();
-        if (progress == null) {
+        if (progress == null || enchantment.is(PenchantEnchantmentTags.NO_LEVELING)) {
             original.call(instance, enchantment, level);
             return;
         }

@@ -1,7 +1,6 @@
 package archives.tater.penchant;
 
 import com.mojang.serialization.Codec;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,6 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,7 +83,7 @@ public class EnchantmentProgress {
     }
 
     public static boolean shouldShowTooltip(Holder<@NotNull Enchantment> enchantment) {
-        return enchantment.value().getMaxLevel() != 1;
+        return enchantment.value().getMaxLevel() != 1 && !enchantment.is(PenchantEnchantmentTags.NO_LEVELING);
     }
 
     public static final Codec<EnchantmentProgress> CODEC =
@@ -112,7 +113,8 @@ public class EnchantmentProgress {
 
         // Increment all enchantments
         for (var enchantment : enchantments.keySet())
-            newProgress.addProgress(enchantment, 1);
+            if (!enchantment.is(PenchantEnchantmentTags.NO_LEVELING))
+                newProgress.addProgress(enchantment, 1);
 
         updateEnchantmentsForEntity(newProgress, stack.getEnchantments(), stack, user);
 
@@ -126,6 +128,8 @@ public class EnchantmentProgress {
         boolean changed = false;
 
         for (var enchantment : enchantments.keySet()) {
+            if (enchantment.is(PenchantEnchantmentTags.NO_LEVELING)) continue;
+
             var level = enchantments.getLevel(enchantment);
 
             while (true) {
@@ -160,7 +164,7 @@ public class EnchantmentProgress {
      * @param stack is mutated
      */
     public static void updateEnchantmentsForEntity(EnchantmentProgress.Mutable progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
-        ItemEnchantments.Mutable newEnchantments = new ItemEnchantments.Mutable(enchantments);
+        var newEnchantments = new ItemEnchantments.Mutable(enchantments);
 
         if (!updateEnchantments(progress, newEnchantments, stack.getMaxDamage())) return;
         stack.set(DataComponents.ENCHANTMENTS, newEnchantments.toImmutable());

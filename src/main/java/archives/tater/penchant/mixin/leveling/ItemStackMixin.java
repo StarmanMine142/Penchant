@@ -1,6 +1,8 @@
 package archives.tater.penchant.mixin.leveling;
 
 import archives.tater.penchant.EnchantmentProgress;
+import archives.tater.penchant.PenchantEnchantmentTags;
+
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.Holder;
@@ -26,7 +28,10 @@ public abstract class ItemStackMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments$Mutable;upgrade(Lnet/minecraft/core/Holder;I)V")
     )
     private static void bookLevelOne(Mutable instance, Holder<Enchantment> enchantment, int level, Operation<Void> original) {
-        instance.set(enchantment, 1);
+        if (enchantment.is(PenchantEnchantmentTags.NO_LEVELING))
+            original.call(instance, enchantment, level);
+        else
+            instance.set(enchantment, 1);
     }
 
 //    @ModifyExpressionValue(
