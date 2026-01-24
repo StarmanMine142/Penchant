@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 import static archives.tater.penchant.client.gui.PenchantGuiUtil.containsPoint;
+import static java.lang.Math.round;
 import static net.minecraft.util.Mth.clamp;
 
 public class ScrollbarComponent {
@@ -56,11 +57,11 @@ public class ScrollbarComponent {
     }
 
     private void setPositionForOffset(int yOffset) {
-        setPosition(maxStep * yOffset / maxScrollerYOffset);
+        setPosition(round(maxStep * yOffset / (float) maxScrollerYOffset));
     }
 
     private void setPositionForOffset(double yOffset) {
-        setPositionForOffset((int) yOffset);
+        setPosition(round(maxStep * (float) yOffset / maxScrollerYOffset));
     }
 
     private int getScrollerY() {
