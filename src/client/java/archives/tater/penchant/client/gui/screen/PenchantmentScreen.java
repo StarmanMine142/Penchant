@@ -1,10 +1,10 @@
 package archives.tater.penchant.client.gui.screen;
 
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.util.PenchantmentHelper;
-import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.client.gui.ScrollbarComponent;
 import archives.tater.penchant.client.gui.widget.EnchantmentSlotWidget;
+import archives.tater.penchant.menu.PenchantmentMenu;
+import archives.tater.penchant.util.PenchantmentHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -132,6 +132,12 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         renderBook(guiGraphics, x, y);
 
+        var font = Minecraft.getInstance().font;
+        var bookCountText = Component.literal(Integer.toString(menu.getBookCount()))
+                .append(Component.object(BOOK_ICON_TEXTURE));
+        guiGraphics.drawString(font, bookCountText, leftPos + 32 - font.width(bookCountText) / 2, topPos + 66, 0xFF404040, false);
+
+        scrollbar.render(guiGraphics);
     }
 
     private void renderBook(GuiGraphics guiGraphics, int x, int y) {
@@ -147,14 +153,9 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+
         var gamePartialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
         super.render(guiGraphics, mouseX, mouseY, gamePartialTick);
-        scrollbar.render(guiGraphics);
-
-        var font = Minecraft.getInstance().font;
-        var bookCountText = Component.literal(Integer.toString(menu.getBookCount()))
-                .append(Component.object(BOOK_ICON_TEXTURE));
-        guiGraphics.drawString(font, bookCountText, leftPos + 32 - font.width(bookCountText) / 2, topPos + 66, 0xFF404040, false);
 
         renderTooltip(guiGraphics, mouseX, mouseY);
 

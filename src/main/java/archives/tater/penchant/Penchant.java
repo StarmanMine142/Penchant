@@ -5,6 +5,7 @@ import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
 import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantEnchantments;
+import archives.tater.penchant.registry.PenchantFlag;
 import archives.tater.penchant.registry.PenchantMenus;
 
 import net.fabricmc.api.ModInitializer;
@@ -50,6 +51,7 @@ public class Penchant implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+        PenchantFlag.init();
         PenchantComponents.init();
         PenchantEnchantments.init();
         PenchantMenus.init();

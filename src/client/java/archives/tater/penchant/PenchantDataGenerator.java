@@ -1,15 +1,10 @@
 package archives.tater.penchant;
 
-import archives.tater.penchant.datagen.DurabilityEnchantmentGenerator;
-import archives.tater.penchant.datagen.DurabilityEnchantmentTagGenerator;
-import archives.tater.penchant.datagen.PackMetaGen;
-import archives.tater.penchant.datagen.TableBlockTagGenerator;
-import archives.tater.penchant.registry.PenchantFeatureFlags;
+import archives.tater.penchant.datagen.*;
+import archives.tater.penchant.registry.PenchantFlag;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-
-import net.minecraft.world.flag.FeatureFlagSet;
 
 public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 	@Override
@@ -21,6 +16,7 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 
         var tablePack = fabricDataGenerator.createBuiltinResourcePack(Penchant.TABLE_REWORK);
         tablePack.addProvider(TableBlockTagGenerator::new);
-        tablePack.addProvider(PackMetaGen.pack(Penchant.TABLE_REWORK, FeatureFlagSet.of(PenchantFeatureFlags.INSTANCE.reworkEnchantingTable)));
+        tablePack.addProvider(FlagTagGenerator.generator(PenchantFlag.REWORK_ENCHANTING_TABLE));
+        tablePack.addProvider(PackMetaGen.pack(Penchant.TABLE_REWORK));
 	}
 }
