@@ -1,4 +1,6 @@
-package archives.tater.penchant;
+package archives.tater.penchant.registry;
+
+import archives.tater.penchant.Penchant;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;

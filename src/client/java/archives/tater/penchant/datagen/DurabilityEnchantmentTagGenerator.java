@@ -1,6 +1,6 @@
 package archives.tater.penchant.datagen;
 
-import archives.tater.penchant.PenchantEnchantmentTags;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
 
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;

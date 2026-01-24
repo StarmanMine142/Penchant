@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.leveling;
 
-import archives.tater.penchant.EnchantmentProgress;
+import archives.tater.penchant.component.EnchantmentProgress;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.spongepowered.asm.mixin.Mixin;

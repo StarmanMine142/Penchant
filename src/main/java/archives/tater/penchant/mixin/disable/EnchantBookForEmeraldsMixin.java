@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.disable;
 
-import archives.tater.penchant.PenchantEnchantmentTags;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

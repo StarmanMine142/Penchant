@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.disable;
 
-import archives.tater.penchant.PenchantEnchantmentTags;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;

@@ -1,10 +1,12 @@
 package archives.tater.penchant;
 
+import archives.tater.penchant.component.EnchantmentProgress;
+import archives.tater.penchant.enchantment.UnbreakableEffect;
+import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
@@ -12,25 +14,15 @@ import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,40 +74,6 @@ public class Penchant implements ModInitializer {
     );
 
     public static final DataComponentType<List<UnbreakableEffect>> UNBREAKABLE = registerEnchantmentEffect("unbreakable", UnbreakableEffect.CODEC.listOf());
-
-    public static Component getName(Holder<Enchantment> enchantment) {
-        return ComponentUtils.mergeStyles(
-                enchantment.value().description().copy(),
-                Style.EMPTY.withColor(enchantment.is(EnchantmentTags.CURSE)
-                        ? ChatFormatting.RED
-                        : ChatFormatting.GRAY
-                )
-        );
-    }
-
-    public static int getBookRequirement(Holder<Enchantment> enchantment) {
-        return 2 * enchantment.value().getMinCost(1) - 5;
-    }
-
-    public static int getXpLevelCost(Holder<Enchantment> enchantment) {
-        return enchantment.value().getAnvilCost();
-    }
-
-    public static boolean canEnchantItem(ItemStack stack, Holder<Enchantment> enchantment) {
-        return (stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE));
-    }
-
-    public static ItemEnchantments getEnchantments(ItemStack stack) {
-        return EnchantmentHelper.getEnchantmentsForCrafting(stack);
-    }
-
-    public static boolean hasEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-        return getEnchantments(stack).getLevel(enchantment) > 0;
-    }
-
-    public static boolean canEnchant(ItemStack stack, Holder<Enchantment> enchantment) {
-        return canEnchantItem(stack, enchantment) && !hasEnchantment(stack, enchantment) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment);
-    }
 
     private void registerPack(Identifier id) {
         ResourceLoader.registerBuiltinPack(

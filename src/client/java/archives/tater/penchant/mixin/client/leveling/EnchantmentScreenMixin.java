@@ -1,7 +1,7 @@
 package archives.tater.penchant.mixin.client.leveling;
 
-import archives.tater.penchant.Penchant;
-import archives.tater.penchant.PenchantEnchantmentTags;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
+import archives.tater.penchant.util.PenchantmentHelper;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -20,6 +20,6 @@ public class EnchantmentScreenMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;")
     )
     private Component noLevel(Holder<Enchantment> enchantment, int level, Operation<Component> original) {
-        return enchantment.is(PenchantEnchantmentTags.NO_LEVELING) ? original.call(enchantment, level) : Penchant.getName(enchantment);
+        return enchantment.is(PenchantEnchantmentTags.NO_LEVELING) ? original.call(enchantment, level) : PenchantmentHelper.getName(enchantment);
     }
 }

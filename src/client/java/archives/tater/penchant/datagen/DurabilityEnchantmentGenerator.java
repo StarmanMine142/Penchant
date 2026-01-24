@@ -1,7 +1,7 @@
 package archives.tater.penchant.datagen;
 
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.UnbreakableEffect;
+import archives.tater.penchant.enchantment.UnbreakableEffect;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;

@@ -1,4 +1,6 @@
-package archives.tater.penchant;
+package archives.tater.penchant.enchantment;
+
+import archives.tater.penchant.Penchant;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -3,6 +3,8 @@ package archives.tater.penchant;
 import archives.tater.penchant.client.FontProgressBar;
 import archives.tater.penchant.client.KeyMappingExt;
 import archives.tater.penchant.client.gui.screen.PenchantmentScreen;
+import archives.tater.penchant.component.EnchantmentProgress;
+import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
 
 import net.fabricmc.api.ClientModInitializer;

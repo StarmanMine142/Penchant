@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.table;
 
-import archives.tater.penchant.PenchantmentMenu;
+import archives.tater.penchant.menu.PenchantmentMenu;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;

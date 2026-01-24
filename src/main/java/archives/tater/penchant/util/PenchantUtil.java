@@ -1,4 +1,4 @@
-package archives.tater.penchant;
+package archives.tater.penchant.util;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;

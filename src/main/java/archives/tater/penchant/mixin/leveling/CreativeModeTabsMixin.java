@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.leveling;
 
-import archives.tater.penchant.PenchantEnchantmentTags;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

@@ -1,6 +1,8 @@
-package archives.tater.penchant;
+package archives.tater.penchant.menu;
 
+import archives.tater.penchant.Penchant;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+import archives.tater.penchant.util.PenchantmentHelper;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
@@ -40,7 +42,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static archives.tater.penchant.PenchantUtil.streamOrdered;
+import static archives.tater.penchant.util.PenchantUtil.streamOrdered;
 
 public class PenchantmentMenu extends AbstractContainerMenu {
     private static final Identifier EMPTY_SLOT_LAPIS_LAZULI = Identifier.withDefaultNamespace("container/slot/lapis_lazuli");
@@ -126,7 +128,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                 .map(pos::offset)
                 .map(level::getBlockEntity)
                 .flatMap(entity -> entity instanceof ChiseledBookShelfBlockEntity bookshelf ? bookshelf.getItems().stream() : Stream.empty())
-                .flatMap(stack -> Penchant.getEnchantments(stack).keySet().stream())
+                .flatMap(stack -> PenchantmentHelper.getEnchantments(stack).keySet().stream())
                 .distinct()
                 .filter(enchantment -> !enchantment.is(EnchantmentTags.IN_ENCHANTING_TABLE))
                 .collect(Collectors.toSet());
@@ -154,10 +156,10 @@ public class PenchantmentMenu extends AbstractContainerMenu {
 
     public void handleEnchant(Holder<Enchantment> enchantment) {
         var stack = getEnchantingStack();
-        var levelCost = Penchant.getXpLevelCost(enchantment);
+        var levelCost = PenchantmentHelper.getXpLevelCost(enchantment);
         if (!player.hasInfiniteMaterials() && (
-                !Penchant.canEnchant(stack, enchantment)
-                        || getBookCount() < Penchant.getBookRequirement(enchantment)
+                !PenchantmentHelper.canEnchant(stack, enchantment)
+                        || getBookCount() < PenchantmentHelper.getBookRequirement(enchantment)
                         || getPlayerXp() < levelCost
         )) {
             Penchant.LOGGER.warn("Cannot enchant!");
@@ -189,10 +191,10 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             return;
         }
         var applicable = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
-                .filter(enchantment -> Penchant.canEnchantItem(stack, enchantment))
+                .filter(enchantment -> PenchantmentHelper.canEnchantItem(stack, enchantment))
                 .toList();
         displayedEnchantments = Stream.concat(
-                applicable.stream().filter(enchantment -> availableEnchantments.contains(enchantment) || Penchant.hasEnchantment(stack, enchantment)),
+                applicable.stream().filter(enchantment -> availableEnchantments.contains(enchantment) || PenchantmentHelper.hasEnchantment(stack, enchantment)),
                 applicable.stream().filter(enchantment -> !availableEnchantments.contains(enchantment) && !enchantment.is(EnchantmentTags.CURSE))
         ).toList();
     }

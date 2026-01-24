@@ -1,9 +1,9 @@
 package archives.tater.penchant.mixin.client.leveling;
 
-import archives.tater.penchant.EnchantmentProgress;
-import archives.tater.penchant.Penchant;
-import archives.tater.penchant.PenchantClient;
-import archives.tater.penchant.PenchantEnchantmentTags;
+import archives.tater.penchant.*;
+import archives.tater.penchant.component.EnchantmentProgress;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
+import archives.tater.penchant.util.PenchantmentHelper;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -54,7 +54,7 @@ public class ItemEnchantmentsMixin {
     )
     private Component hideLevel(Holder<@NotNull Enchantment> holder, int i, Operation<Component> original, @Share("progress") LocalRef<EnchantmentProgress> progress, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level) {
         if (holder.is(PenchantEnchantmentTags.NO_LEVELING)) return original.call(holder, i);
-        if (progress.get() == null) return Penchant.getName(holder);
+        if (progress.get() == null) return PenchantmentHelper.getName(holder);
         enchantmentShare.set(holder);
         level.set(i);
         return original.call(holder, i);

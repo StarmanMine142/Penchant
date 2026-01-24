@@ -1,4 +1,7 @@
-package archives.tater.penchant;
+package archives.tater.penchant.component;
+
+import archives.tater.penchant.Penchant;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;

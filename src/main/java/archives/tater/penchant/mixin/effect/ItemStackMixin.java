@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.effect;
 
-import archives.tater.penchant.UnbreakableEffect;
+import archives.tater.penchant.enchantment.UnbreakableEffect;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;

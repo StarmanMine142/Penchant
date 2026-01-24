@@ -1,8 +1,8 @@
 package archives.tater.penchant.mixin.leveling;
 
-import archives.tater.penchant.EnchantmentProgress;
+import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.PenchantEnchantmentTags;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
 
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
