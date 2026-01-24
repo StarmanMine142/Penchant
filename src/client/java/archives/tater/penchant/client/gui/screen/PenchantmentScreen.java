@@ -9,6 +9,7 @@ import archives.tater.penchant.util.PenchantmentHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.book.BookModel;
@@ -23,6 +24,8 @@ import net.minecraft.world.item.ItemStack;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.List;
+
 import static java.util.Objects.requireNonNull;
 import static net.minecraft.util.Mth.clamp;
 import static net.minecraft.util.Mth.lerp;
@@ -32,6 +35,10 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private static final Identifier BOOK_TEXTURE = Identifier.withDefaultNamespace("textures/entity/enchanting_table_book.png");
     private static final Identifier SCROLLLER_TEXTURE = Penchant.id("container/enchanting_table/scroller");
     private static final AtlasSprite BOOK_ICON_TEXTURE = new AtlasSprite(AtlasIds.GUI, Penchant.id("container/enchanting_table/book"));
+    private static final List<Identifier> SECOND_SLOT_TEXTURES = List.of(
+            Identifier.withDefaultNamespace("container/slot/lapis_lazuli"),
+            Penchant.id("container/slot/book")
+    );
 
     private final ScrollbarComponent scrollbar = new ScrollbarComponent(
             SCROLLLER_TEXTURE,
@@ -42,6 +49,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
             60,
             this::rebuildWidgets
     );
+
+    private final CyclingSlotBackground secondSlotBackground = new CyclingSlotBackground(1);
 
     private final RandomSource random = RandomSource.create();
     private @Nullable BookModel bookModel;
@@ -97,6 +106,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     public void containerTick() {
         super.containerTick();
         minecraft.player.experienceDisplayStartTick = minecraft.player.tickCount;
+        secondSlotBackground.tick(SECOND_SLOT_TEXTURES);
         var stack = menu.getEnchantingStack();
         var itemChanged = !ItemStack.matches(stack, last);
         if (itemChanged) last = stack.copy();
@@ -136,6 +146,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var bookCountText = Component.object(BOOK_ICON_TEXTURE)
                 .append(" " + menu.getBookCount());
         guiGraphics.drawString(font, bookCountText, leftPos + 32 - font.width(bookCountText) / 2, topPos + 66, 0xFF404040, false);
+
+        secondSlotBackground.render(menu, guiGraphics, partialTick, leftPos, topPos);
 
         scrollbar.render(guiGraphics);
     }

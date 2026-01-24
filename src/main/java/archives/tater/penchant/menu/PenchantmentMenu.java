@@ -86,11 +86,6 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             public int getMaxStackSize(ItemStack stack) {
                 return stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) ? 1 : super.getMaxStackSize(stack);
             }
-
-            @Override
-            public Identifier getNoItemIcon() {
-                return EMPTY_SLOT_LAPIS_LAZULI;
-            }
         });
         addStandardInventorySlots(playerInventory, 8, 87);
 
@@ -178,6 +173,8 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                 enchantments.set(enchantment, 1);
             });
             enchantSlots.setItem(0, result);
+
+            enchantSlots.getItem(1).shrink(1);
 
             player.awardStat(Stats.ENCHANT_ITEM);
             if (player instanceof ServerPlayer serverPlayer)
