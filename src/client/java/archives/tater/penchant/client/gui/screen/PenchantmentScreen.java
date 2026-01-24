@@ -5,6 +5,7 @@ import archives.tater.penchant.PenchantmentMenu;
 import archives.tater.penchant.client.gui.ScrollbarComponent;
 import archives.tater.penchant.client.gui.widget.EnchantmentSlotWidget;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -12,7 +13,9 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.book.BookModel;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.objects.AtlasSprite;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,6 +34,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private static final Identifier TEXTURE = Penchant.id("textures/gui/container/enchanting_table.png");
     private static final Identifier BOOK_TEXTURE = Identifier.withDefaultNamespace("textures/entity/enchanting_table_book.png");
     private static final Identifier SCROLLLER_TEXTURE = Penchant.id("container/enchanting_table/scroller");
+    private static final AtlasSprite BOOK_ICON_TEXTURE = new AtlasSprite(AtlasIds.GUI, Penchant.id("container/enchanting_table/book"));
 
     private final ScrollbarComponent scrollbar = new ScrollbarComponent(
             SCROLLLER_TEXTURE,
@@ -57,6 +61,10 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
 
     public PenchantmentScreen(PenchantmentMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+        imageWidth = 176;
+        imageHeight = 169;
+        inventoryLabelX = 8;
+        inventoryLabelY = imageHeight - 94;
     }
 
     @Override
@@ -72,6 +80,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                 topPos + 14,
                 displayedEnchantments.size() - 4
         );
+
+        var creative = requireNonNull(minecraft.player).hasInfiniteMaterials();
         for (var i = 0; i < 5; i++) {
             var index = scrollbar.getPosition() + i;
             if (index >= displayedEnchantments.size()) break;
@@ -81,8 +91,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                     topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                     enchantment,
                     itemEnchantments.getLevel(enchantment) > 0,
-                    Penchant.getBookCost(enchantment) <= menu.getBookCount(),
-                    Penchant.getXpCost(enchantment) <=  menu.getPlayerXp(),
+                    creative || Penchant.getBookCost(enchantment) <= menu.getBookCount(),
+                    creative || Penchant.getXpCost(enchantment) <=  menu.getPlayerXp(),
                     menu.isAvailable(enchantment)
             ));
         }
@@ -145,8 +155,13 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var gamePartialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
         super.render(guiGraphics, mouseX, mouseY, gamePartialTick);
         scrollbar.render(guiGraphics);
+
+        var font = Minecraft.getInstance().font;
+        var bookCountText = Component.literal(Integer.toString(menu.getBookCount()))
+                .append(Component.object(BOOK_ICON_TEXTURE));
+        guiGraphics.drawString(font, bookCountText, leftPos + 32 - font.width(bookCountText) / 2, topPos + 66, 0xFF404040, false);
+
         renderTooltip(guiGraphics, mouseX, mouseY);
-        var creative = minecraft.player.hasInfiniteMaterials();
 
     }
 
