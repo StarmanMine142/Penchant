@@ -1,7 +1,12 @@
 package archives.tater.penchant;
 
+import archives.tater.penchant.network.EnchantPayload;
+import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -21,7 +26,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,12 +93,28 @@ public class Penchant implements ModInitializer {
         );
     }
 
-    public static int getBookCost(Holder<Enchantment> enchantment) {
-        return enchantment.value().getMinCost(1);
+    public static int getBookRequirement(Holder<Enchantment> enchantment) {
+        return 2 * enchantment.value().getMinCost(1) - 5;
     }
 
-    public static int getXpCost(Holder<Enchantment> enchantment) {
+    public static int getXpLevelCost(Holder<Enchantment> enchantment) {
         return enchantment.value().getAnvilCost();
+    }
+
+    public static boolean canEnchantItem(ItemStack stack, Holder<Enchantment> enchantment) {
+        return (stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE));
+    }
+
+    public static ItemEnchantments getEnchantments(ItemStack stack) {
+        return EnchantmentHelper.getEnchantmentsForCrafting(stack);
+    }
+
+    public static boolean hasEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        return getEnchantments(stack).getLevel(enchantment) > 0;
+    }
+
+    public static boolean canEnchant(ItemStack stack, Holder<Enchantment> enchantment) {
+        return canEnchantItem(stack, enchantment) && !hasEnchantment(stack, enchantment) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment);
     }
 
     private void registerPack(Identifier id) {
@@ -104,6 +129,15 @@ public class Penchant implements ModInitializer {
 	@Override
 	public void onInitialize() {
         PayloadTypeRegistry.playS2C().register(UnlockedEnchantmentsPayload.TYPE, UnlockedEnchantmentsPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(EnchantPayload.TYPE, EnchantPayload.CODEC);
+
+        ServerPlayNetworking.registerGlobalReceiver(EnchantPayload.TYPE, (payload, context) -> {
+            if (!(context.player().containerMenu instanceof PenchantmentMenu menu)) {
+                LOGGER.warn("Received enchant payload but enchantment menu was not open");
+                return;
+            }
+            menu.handleEnchant(payload.enchantment());
+        });
 
         registerPack(DURABILITY_REWORK);
         registerPack(TABLE_REWORK);

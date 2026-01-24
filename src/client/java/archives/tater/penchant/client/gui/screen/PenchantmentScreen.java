@@ -12,7 +12,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.book.BookModel;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.core.Holder;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.objects.AtlasSprite;
@@ -20,11 +19,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.jspecify.annotations.Nullable;
-
-import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 import static net.minecraft.util.Mth.clamp;
@@ -49,8 +45,6 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private final RandomSource random = RandomSource.create();
     private @Nullable BookModel bookModel;
 
-    private List<Holder<Enchantment>> lastDisplayed = List.of();
-
     public float flip;
     public float oFlip;
     public float flipT;
@@ -72,7 +66,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         super.init();
         bookModel = new BookModel(minecraft.getEntityModels().bakeLayer(ModelLayers.BOOK));
         var displayedEnchantments = menu.getDisplayedEnchantments();
-        var itemEnchantments = menu.getEnchantingStack().getEnchantments();
+        var stack = menu.getEnchantingStack();
         scrollbar.update(
                 leftPos + 162,
                 topPos + 14,
@@ -90,9 +84,9 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                     leftPos + 60,
                     topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                     enchantment,
-                    itemEnchantments.getLevel(enchantment) > 0,
-                    creative || Penchant.getBookCost(enchantment) <= menu.getBookCount(),
-                    creative || Penchant.getXpCost(enchantment) <=  menu.getPlayerXp(),
+                    Penchant.canEnchant(stack, enchantment),
+                    creative || Penchant.getBookRequirement(enchantment) <= menu.getBookCount(),
+                    creative || Penchant.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
                     menu.isAvailable(enchantment)
             ));
         }
@@ -102,11 +96,11 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     public void containerTick() {
         super.containerTick();
         minecraft.player.experienceDisplayStartTick = minecraft.player.tickCount;
-        tickBook();
-        if (!menu.getDisplayedEnchantments().equals(lastDisplayed)) {
-            lastDisplayed = menu.getDisplayedEnchantments();
-            rebuildWidgets();
-        }
+        var stack = menu.getEnchantingStack();
+        var itemChanged = !ItemStack.matches(stack, last);
+        if (itemChanged) last = stack.copy();
+        tickBook(itemChanged);
+        if (itemChanged) rebuildWidgets();
     }
 
     @Override
@@ -165,15 +159,11 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
 
     }
 
-    public void tickBook() {
-        var itemStack = menu.getSlot(0).getItem();
-        if (!ItemStack.matches(itemStack, last)) {
-            last = itemStack;
-
+    public void tickBook(boolean itemChanged) {
+        if (itemChanged)
             do {
                 flipT = flipT + (random.nextInt(4) - random.nextInt(4));
             } while (flip <= flipT + 1.0F && flip >= flipT - 1.0F);
-        }
 
         oFlip = flip;
         oOpen = open;

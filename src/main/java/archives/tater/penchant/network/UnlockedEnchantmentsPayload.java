@@ -1,4 +1,6 @@
-package archives.tater.penchant;
+package archives.tater.penchant.network;
+
+import archives.tater.penchant.Penchant;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;

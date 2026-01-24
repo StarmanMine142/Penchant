@@ -1,6 +1,9 @@
 package archives.tater.penchant.client.gui.widget;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.network.EnchantPayload;
+
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -28,24 +31,24 @@ public class EnchantmentSlotWidget extends AbstractButton {
 
     private final Holder<Enchantment> enchantment;
     private final MutableComponent text;
-    private final boolean isApplied;
+    private final boolean canAdd;
     private final boolean hasEnoughBooks;
     private final boolean hasEnoughXp;
     private final boolean isUnlocked;
     private final int cost;
 
-    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean isApplied, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean canAdd, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
         super(x, y, WIDTH, HEIGHT, enchantment.value().description());
         this.enchantment = enchantment;
         text = enchantment.value().description().copy();
-        if (!isUnlocked && !isApplied) text.withStyle(style -> style.withFont(ALT_FONT));
+        if (!isUnlocked && canAdd) text.withStyle(style -> style.withFont(ALT_FONT));
         if (enchantment.is(EnchantmentTags.CURSE)) text.withStyle(ChatFormatting.DARK_RED);
-        this.isApplied = isApplied;
+        this.canAdd = canAdd;
         this.hasEnoughBooks = hasEnoughBooks;
         this.hasEnoughXp = hasEnoughXp;
         this.isUnlocked = isUnlocked;
         cost = enchantment.value().getAnvilCost();
-        active = hasEnoughBooks && hasEnoughXp && isUnlocked && !isApplied;
+        active = hasEnoughBooks && hasEnoughXp && isUnlocked && canAdd;
     }
 
     @Override
@@ -59,7 +62,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
         if (!isUnlocked) return;
 
         var costText = Integer.toString(cost);
-        var color = isApplied ? 0xFF685E4A :
+        var color = !canAdd ? 0xFF685E4A :
                 hasEnoughXp ? 0xFF80FF20 :
                 0xFF7F1010;
         guiGraphics.drawString(font, costText, getX() + width - 2 - font.width(costText), getY() + 2, color, true);
@@ -70,7 +73,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
 
     @Override
     public void onPress(InputWithModifiers input) {
-
+        ClientPlayNetworking.send(new EnchantPayload(enchantment));
     }
 
     @Override
