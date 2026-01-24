@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,8 +41,12 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private final Player player;
 
+    public PenchantmentMenu(int containerId, Inventory playerInventory) {
+        this(containerId, playerInventory, ContainerLevelAccess.NULL);
+    }
+
     public PenchantmentMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
-        super(MenuType.ENCHANTMENT, containerId);
+        super(Penchant.PENCHANTMENT_MENU, containerId);
         player = playerInventory.player;
         this.access = access;
         addSlot(new Slot(enchantSlots, 0, 15, 47) {
@@ -63,7 +66,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                 return EMPTY_SLOT_LAPIS_LAZULI;
             }
         });
-        addStandardInventorySlots(playerInventory, 8, 84);
+        addStandardInventorySlots(playerInventory, 8, 87);
 
         access.execute((level, pos) -> {
             power.set(getPower(level, pos));
@@ -71,13 +74,16 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         });
     }
 
+    public boolean hasItem() {
+        return !enchantSlots.getItem(0).isEmpty();
+    }
+
     public static Set<Holder<Enchantment>> getUnlockedEnchantments(Level level, BlockPos pos) {
         return Stream.concat(
                 level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT)
                         .get(EnchantmentTags.IN_ENCHANTING_TABLE)
-                        .<HolderSet<Enchantment>>map(Function.identity())
-                        .orElse(HolderSet.empty())
-                        .stream(),
+                        .stream()
+                        .flatMap(HolderSet::stream),
                 EnchantingTableBlock.BOOKSHELF_OFFSETS.stream()
                         .filter(offset -> EnchantingTableBlock.isValidBookShelf(level, pos, offset))
                         .map(pos::offset)

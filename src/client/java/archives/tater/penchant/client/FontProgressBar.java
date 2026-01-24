@@ -1,4 +1,6 @@
-package archives.tater.penchant;
+package archives.tater.penchant.client;
+
+import archives.tater.penchant.Penchant;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

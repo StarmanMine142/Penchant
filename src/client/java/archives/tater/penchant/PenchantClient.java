@@ -1,12 +1,18 @@
 package archives.tater.penchant;
 
+import archives.tater.penchant.client.FontProgressBar;
+import archives.tater.penchant.client.KeyMappingExt;
+import archives.tater.penchant.client.gui.screen.PenchantmentScreen;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -59,5 +65,10 @@ public class PenchantClient implements ClientModInitializer {
     @Override
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+        MenuScreens.register(Penchant.PENCHANTMENT_MENU, PenchantmentScreen::new);
+
+        ClientPlayNetworking.registerGlobalReceiver(AvailableEnchantmentsPayload.TYPE, (payload, context) -> {
+
+        });
 	}
 }

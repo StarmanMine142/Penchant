@@ -16,7 +16,8 @@
     "leveling.CreativeModeTabsMixin",
     "leveling.EnchantCommandMixin",
     "leveling.EnchantRandomlyFunctionMixin",
-    "leveling.ItemStackMixin"
+    "leveling.ItemStackMixin",
+    "table.EnchantingTableBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1

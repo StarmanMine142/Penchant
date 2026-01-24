@@ -1,4 +1,4 @@
-package archives.tater.penchant;
+package archives.tater.penchant.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Type;

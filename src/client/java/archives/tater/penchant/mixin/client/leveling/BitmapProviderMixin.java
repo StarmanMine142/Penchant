@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.client.leveling;
 
-import archives.tater.penchant.FontProgressBar;
+import archives.tater.penchant.client.FontProgressBar;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,6 +1,7 @@
 package archives.tater.penchant;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,6 +19,8 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.slf4j.Logger;
@@ -55,6 +58,12 @@ public class Penchant implements ModInitializer {
         return Registry.register(BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, id(path), DataComponentType.<T>builder().persistent(codec).build());
     }
 
+    public static final MenuType<PenchantmentMenu> PENCHANTMENT_MENU = Registry.register(
+            BuiltInRegistries.MENU,
+            id("penchantment"),
+            new MenuType<>(PenchantmentMenu::new, FeatureFlags.VANILLA_SET) // TODO feature flags
+    );
+
     public static final DataComponentType<EnchantmentProgress> ENCHANTMENT_PROGRESS = registerComponent(
             "enchantment_progress",
             EnchantmentProgress.CODEC,
@@ -86,6 +95,8 @@ public class Penchant implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+        PayloadTypeRegistry.playS2C().register(AvailableEnchantmentsPayload.TYPE, AvailableEnchantmentsPayload.CODEC);
+
         registerPack(DURABILITY_REWORK);
         registerPack(TABLE_REWORK);
 	}
