@@ -166,9 +166,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                 .append(" ")
                 .append(Component.object(GRINDSTONE_ICON_TEXTURE))
                 .append(FontUtils.THIN_SPACE_TEXT)
-                .append("✔");
-//                .append("❌");
-        guiGraphics.drawString(font, infoText, leftPos + 32 - font.width(infoText) / 2, topPos + 66, 0xFF60606, false);
+                .append(menu.hasDisenchanter() ? "✔" : "❌");
+        guiGraphics.drawString(font, infoText, leftPos + 32 - font.width(infoText) / 2, topPos + 66, 0xFF606060, false);
 
         secondSlotBackground.render(menu, guiGraphics, partialTick, leftPos, topPos);
 

@@ -12,6 +12,7 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
         var pack = fabricDataGenerator.createPack();
         pack.addProvider(FlagTagGenerator.generator());
         pack.addProvider(EnchantmentTagGenerator::new);
+        pack.addProvider(BlockTagGenerator::new);
 
         var durabilityPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.DURABILITY_REWORK);
         durabilityPack.addProvider(DurabilityEnchantmentGenerator::new);

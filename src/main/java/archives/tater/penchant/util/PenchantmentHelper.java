@@ -39,7 +39,7 @@ public class PenchantmentHelper {
     }
 
     public static boolean canEnchantItem(ItemStack stack, Holder<Enchantment> enchantment) {
-        return (stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE));
+        return stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE);
     }
 
     public static ItemEnchantments getEnchantments(ItemStack stack) {

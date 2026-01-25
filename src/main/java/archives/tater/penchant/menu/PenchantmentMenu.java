@@ -2,6 +2,7 @@ package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+import archives.tater.penchant.registry.PenchantBlockTags;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
 import archives.tater.penchant.registry.PenchantMenus;
 import archives.tater.penchant.util.PenchantmentHelper;
@@ -54,6 +55,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         }
     };
     private final DataSlot bookCount = addDataSlot(DataSlot.standalone());
+    private final DataSlot hasDisenchanter = addDataSlot(DataSlot.standalone());
     private final ContainerLevelAccess access;
     private final Player player;
     private final Registry<Enchantment> enchantments;
@@ -92,6 +94,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
 
         access.execute((level, pos) -> {
             bookCount.set(getBookCount(level, pos));
+            hasDisenchanter.set(hasDisenchanter(level, pos) ? 1 : 0);
         });
     }
 
@@ -116,6 +119,10 @@ public class PenchantmentMenu extends AbstractContainerMenu {
        return bookCount.get();
     }
 
+    public boolean hasDisenchanter() {
+        return hasDisenchanter.get() != 0;
+    }
+
     public ItemStack getEnchantingStack() {
         return enchantSlots.getItem(0);
     }
@@ -129,6 +136,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public boolean canDisenchant() {
+        if (!hasDisenchanter()) return false;
         var stack = getEnchantingStack();
         return stack.isEmpty() || PenchantmentHelper.getEnchantments(stack).keySet().stream().anyMatch(enchantment -> !enchantment.is(EnchantmentTags.CURSE));
     }
@@ -172,6 +180,13 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                         ? (int) ChiseledBookShelfBlock.SLOT_OCCUPIED_PROPERTIES.stream().filter(state::getValue).count()
                         : 3)
                 .sum();
+    }
+
+    public static boolean hasDisenchanter(Level level, BlockPos pos) {
+        return EnchantingTableBlock.BOOKSHELF_OFFSETS.stream()
+                .map(pos::offset)
+                .map(level::getBlockState)
+                .anyMatch(state -> state.is(PenchantBlockTags.DISENCHANTER));
     }
 
     public void sendEnchantments() {
