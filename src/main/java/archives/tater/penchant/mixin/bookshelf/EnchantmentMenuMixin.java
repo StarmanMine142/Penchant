@@ -1,5 +1,7 @@
 package archives.tater.penchant.mixin.bookshelf;
 
+import archives.tater.penchant.util.PenchantmentHelper;
+
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -16,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 
 @Mixin(EnchantmentMenu.class)
 @Debug(export = true)
@@ -28,11 +29,11 @@ public class EnchantmentMenuMixin {
     private boolean getBookCount(Level level, BlockPos enchantingTablePos, BlockPos bookshelfPos, Operation<Boolean> original, @Share("chiseledBookCount") LocalIntRef chiseledBookCount, @Share("isChiseledBookshelf") LocalBooleanRef isChiseledBookshelf) {
         isChiseledBookshelf.set(false);
         if (!original.call(level, enchantingTablePos, bookshelfPos)) return false;
-        var entity = level.getBlockEntity(enchantingTablePos.offset(bookshelfPos));
-        if (!(entity instanceof ChiseledBookShelfBlockEntity bookshelf)) return true;
+        var count = PenchantmentHelper.getBookCount(level.getBlockState(enchantingTablePos.offset(bookshelfPos)));
+        if (count == 3) return true;
 
         isChiseledBookshelf.set(true);
-        chiseledBookCount.set(chiseledBookCount.get() + bookshelf.count());
+        chiseledBookCount.set(chiseledBookCount.get() + count);
         return true;
     }
 

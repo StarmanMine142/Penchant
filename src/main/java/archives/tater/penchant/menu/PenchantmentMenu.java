@@ -35,7 +35,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 
@@ -177,9 +176,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                 .map(pos::offset)
                 .map(level::getBlockState)
                 .filter(state -> state.is(BlockTags.ENCHANTMENT_POWER_PROVIDER))
-                .mapToInt(state -> state.hasProperty(ChiseledBookShelfBlock.SLOT_0_OCCUPIED)
-                        ? (int) ChiseledBookShelfBlock.SLOT_OCCUPIED_PROPERTIES.stream().filter(state::getValue).count()
-                        : 3)
+                .mapToInt(PenchantmentHelper::getBookCount)
                 .sum();
     }
 

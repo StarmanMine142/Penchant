@@ -17,6 +17,6 @@ public class TableBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
     @Override
     protected void addTags(Provider provider) {
         valueLookupBuilder(BlockTags.ENCHANTMENT_POWER_PROVIDER)
-                .add(Blocks.CHISELED_BOOKSHELF);
+                .add(Blocks.CHISELED_BOOKSHELF, Blocks.LECTERN);
     }
 }
