@@ -1,6 +1,6 @@
 {
   "values": [
-    "!#minecraft:in_enchanting_table",
+    "!#penchant:common",
     "!#minecraft:curse",
     "#penchant:uncommon"
   ]

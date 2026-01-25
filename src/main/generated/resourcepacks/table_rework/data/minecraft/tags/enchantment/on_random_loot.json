@@ -1,6 +1,6 @@
 {
   "values": [
-    "!#minecraft:non_treasure",
+    "!#penchant:common",
     "#penchant:uncommon",
     "#penchant:rare"
   ]

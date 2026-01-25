@@ -25,6 +25,7 @@ public class TableEnchantmentTagGenerator extends FabricTagProvider<Enchantment>
     protected void addTags(HolderLookup.Provider wrapperLookup) {
         var rare = TagKey.create(Registries.ENCHANTMENT, Penchant.id("rare"));
         var uncommon = TagKey.create(Registries.ENCHANTMENT, Penchant.id("uncommon"));
+        var common = TagKey.create(Registries.ENCHANTMENT, Penchant.id("common"));
 
         //noinspection unchecked
         builder(rare).add(
@@ -62,6 +63,19 @@ public class TableEnchantmentTagGenerator extends FabricTagProvider<Enchantment>
         )
                 .addOptional(ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath("farmersdelight", "backstabbing")));
 
+        //noinspection unchecked
+        builder(common).add(
+                Enchantments.PROTECTION,
+                Enchantments.SHARPNESS,
+                Enchantments.UNBREAKING,
+                Enchantments.POWER,
+                Enchantments.PIERCING,
+                Enchantments.QUICK_CHARGE,
+                Enchantments.IMPALING,
+                Enchantments.LOYALTY,
+                Enchantments.LURE
+        );
+
         builder(EnchantmentTags.TREASURE)
                 .addTag(rare);
         builder(EnchantmentTags.NON_TREASURE)
@@ -70,11 +84,11 @@ public class TableEnchantmentTagGenerator extends FabricTagProvider<Enchantment>
                 .tagex_excludeTag(uncommon)
                 .tagex_excludeTag(rare);
         builder(EnchantmentTags.TRADEABLE)
-                .tagex_forceExcludeTag(EnchantmentTags.IN_ENCHANTING_TABLE)
+                .tagex_forceExcludeTag(common)
                 .tagex_forceExcludeTag(EnchantmentTags.CURSE)
                 .addTag(uncommon);
         builder(EnchantmentTags.ON_RANDOM_LOOT)
-                .tagex_forceExcludeTag(EnchantmentTags.NON_TREASURE)
+                .tagex_forceExcludeTag(common)
                 .addTag(uncommon)
                 .addTag(rare);
         builder(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
