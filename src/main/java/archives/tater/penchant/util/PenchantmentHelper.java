@@ -27,8 +27,8 @@ import static java.lang.Math.abs;
 public class PenchantmentHelper {
     private PenchantmentHelper() {}
 
-    public static List<BlockPos> LENIENT_BOOKSHELF_OFFSETS = BlockPos.betweenClosedStream(-3, -1, -3, 3, 2, 3)
-            .filter(blockPos -> abs(blockPos.getX()) >= 2 || abs(blockPos.getZ()) >= 2)
+    public static List<BlockPos> LENIENT_BOOKSHELF_OFFSETS = BlockPos.betweenClosedStream(-3, -2, -3, 3, 2, 3)
+            .filter(blockPos -> abs(blockPos.getX()) >= 2 || abs(blockPos.getZ()) >= 2 || blockPos.getY() >= 2 || blockPos.getY() <= -1)
             .map(BlockPos::immutable)
             .toList();
 
