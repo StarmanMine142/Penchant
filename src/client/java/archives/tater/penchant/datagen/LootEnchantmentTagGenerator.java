@@ -16,8 +16,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.concurrent.CompletableFuture;
 
-public class TableEnchantmentTagGenerator extends FabricTagProvider<Enchantment> {
-    public TableEnchantmentTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class LootEnchantmentTagGenerator extends FabricTagProvider<Enchantment> {
+    public LootEnchantmentTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, Registries.ENCHANTMENT, registriesFuture);
     }
 

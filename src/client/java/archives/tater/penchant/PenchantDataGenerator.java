@@ -21,12 +21,15 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 
         var tablePack = fabricDataGenerator.createBuiltinResourcePack(Penchant.TABLE_REWORK);
         tablePack.addProvider(TableBlockTagGenerator::new);
-        tablePack.addProvider(TableEnchantmentTagGenerator::new);
         tablePack.addProvider(FlagTagGenerator.generator(
                 PenchantFlag.REWORKED_TABLE_MENU,
                 PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT,
                 PenchantFlag.NO_ANVIL_BOOKS
         ));
         tablePack.addProvider(PackMetaGen.pack(Penchant.TABLE_REWORK));
+
+        var lootPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.LOOT_REWORK);
+        lootPack.addProvider(LootEnchantmentTagGenerator::new);
+        lootPack.addProvider(PackMetaGen.pack(Penchant.LOOT_REWORK));
 	}
 }

@@ -39,6 +39,7 @@ public class Penchant implements ModInitializer {
 
     public static final Identifier DURABILITY_REWORK = Penchant.id("durability_rework");
     public static final Identifier TABLE_REWORK = Penchant.id("table_rework");
+    public static final Identifier LOOT_REWORK = Penchant.id("loot_rework");
 
     private void registerPack(Identifier id) {
         ResourceLoader.registerBuiltinPack(
@@ -69,5 +70,6 @@ public class Penchant implements ModInitializer {
 
         registerPack(DURABILITY_REWORK);
         registerPack(TABLE_REWORK);
+        registerPack(LOOT_REWORK);
 	}
 }
