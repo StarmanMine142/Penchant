@@ -1,14 +1,5 @@
 {
   "values": [
-    "!minecraft:fire_aspect",
-    "!minecraft:flame",
-    "!minecraft:silk_touch",
-    "!minecraft:lunge",
-    "!minecraft:channeling",
-    "!minecraft:riptide",
-    "!minecraft:fortune",
-    "!minecraft:thorns",
-    "!minecraft:infinity",
-    "!minecraft:respiration"
+    "!#penchant:normal_treasure"
   ]
 }

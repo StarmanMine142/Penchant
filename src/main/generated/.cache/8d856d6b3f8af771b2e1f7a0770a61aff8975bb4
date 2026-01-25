@@ -1,2 +1,7 @@
 // 1.21.11	-999999999-01-01T00:00:00	penchant:table_rework/Tags for minecraft:enchantment
-ac9ea8135158d5236908475146a9fbdb5b2acb2a resourcepacks/table_rework/data/minecraft/tags/enchantment/in_enchanting_table.json
+7a5ebd08996614a6c9d665c973fd457147f4c157 resourcepacks/table_rework/data/minecraft/tags/enchantment/in_enchanting_table.json
+04a2de56b6d4e4546f3e0b1a8036ba5a1863b14f resourcepacks/table_rework/data/minecraft/tags/enchantment/on_mob_spawn_equipment.json
+04a2de56b6d4e4546f3e0b1a8036ba5a1863b14f resourcepacks/table_rework/data/minecraft/tags/enchantment/on_random_loot.json
+04a2de56b6d4e4546f3e0b1a8036ba5a1863b14f resourcepacks/table_rework/data/minecraft/tags/enchantment/on_traded_equipment.json
+04a2de56b6d4e4546f3e0b1a8036ba5a1863b14f resourcepacks/table_rework/data/minecraft/tags/enchantment/tradeable.json
+941c6d2561e2f8d074c46ee2c739fe547c981c47 resourcepacks/table_rework/data/penchant/tags/enchantment/normal_treasure.json
