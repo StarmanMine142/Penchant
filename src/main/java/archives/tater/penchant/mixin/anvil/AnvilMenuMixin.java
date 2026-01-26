@@ -1,4 +1,4 @@
-package archives.tater.penchant.mixin.misc;
+package archives.tater.penchant.mixin.anvil;
 
 import archives.tater.penchant.registry.PenchantFlag;
 

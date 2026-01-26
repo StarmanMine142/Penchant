@@ -44,6 +44,7 @@ public class PenchantFlag {
     public static final PenchantFlag REWORKED_TABLE_MENU = register("reworked_table_menu");
     public static final PenchantFlag LENIENT_BOOKSHELF_PLACEMENT = register("lenient_bookshelf_placement");
     public static final PenchantFlag NO_ANVIL_BOOKS = register("no_anvil_books");
+    public static final PenchantFlag GUARANTEED_ENCHANTED_DROP = register("guaranteed_enchanted_drop");
 
     public static void init() {
 

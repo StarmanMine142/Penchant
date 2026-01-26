@@ -19,6 +19,8 @@
   "dataPack.penchant.no_anvil_books.description": "Prevent applying enchanted books to equipment in anvil",
   "dataPack.penchant.loot_rework.name": "Penchant: Loot Rework",
   "dataPack.penchant.loot_rework.description": "Reorganize where enchantments are unlocked & found",
+  "dataPack.penchant.guaranteed_drops.name": "Penchant: Guaranteed Drops",
+  "dataPack.penchant.guaranteed_drops.description": "Mobs always drop enchanted equipment",
   "advancements.penchant.enchanted_bookshelf.title": "Research & Development",
   "advancements.penchant.enchanted_bookshelf.description": "Unlock enchantments by putting an enchanted book near your enchanting table",
   "advancements.penchant.all_enchantments.title": "Gotta Catch 'Em All",

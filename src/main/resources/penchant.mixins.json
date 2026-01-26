@@ -3,6 +3,7 @@
   "package": "archives.tater.penchant.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "anvil.AnvilMenuMixin",
     "bookshelf.EnchantingTableBlockMixin",
     "bookshelf.EnchantmentMenuMixin",
     "disable.CreativeModeTabsMixin",
@@ -10,13 +11,13 @@
     "disable.EnchantRandomlyFunctionMixin",
     "disable.ItemStackMixin",
     "disable.SingleEnchantmentMixin",
+    "drops.MobMixin",
     "effect.ItemStackMixin",
     "leveling.AnvilMenuMixin",
     "leveling.CreativeModeTabsMixin",
     "leveling.EnchantCommandMixin",
     "leveling.EnchantRandomlyFunctionMixin",
     "leveling.ItemStackMixin",
-    "misc.AnvilMenuMixin",
     "table.EnchantingTableBlockMixin",
     "table.EnchantmentMenuMixin"
   ],

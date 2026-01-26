@@ -39,6 +39,7 @@ public class Penchant implements ModInitializer {
     public static final Identifier TABLE_REWORK = Penchant.id("table_rework");
     public static final Identifier NO_ANVIL_BOOKS = Penchant.id("no_anvil_books");
     public static final Identifier LOOT_REWORK = Penchant.id("loot_rework");
+    public static final Identifier GUARANTEED_DROPS = Penchant.id("guaranteed_drops");
 
     private void registerPack(Identifier id) {
         ResourceLoader.registerBuiltinPack(
@@ -73,5 +74,6 @@ public class Penchant implements ModInitializer {
         registerPack(TABLE_REWORK);
         registerPack(NO_ANVIL_BOOKS);
         registerPack(LOOT_REWORK);
+        registerPack(GUARANTEED_DROPS);
 	}
 }

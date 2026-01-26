@@ -11,7 +11,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -20,7 +19,6 @@ import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.level.Level;
 
 @Mixin(EnchantmentMenu.class)
-@Debug(export = true)
 public class EnchantmentMenuMixin {
     @WrapOperation(
             method = "method_17411",
