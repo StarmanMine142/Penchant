@@ -1,6 +1,7 @@
 package archives.tater.penchant.datagen;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.advancement.ExtractEnchantmentTrigger;
 import archives.tater.penchant.advancement.OpenTableTrigger;
 import archives.tater.penchant.registry.PenchantAdvancements;
 
@@ -102,11 +103,18 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
         var babel = register(Penchant.id("babel"), Items.BOOKSHELF, AdvancementType.CHALLENGE, consumer, builder -> builder
                 .parent(fullLibrary)
                 .addCriterion("has_books", PenchantAdvancements.OPEN_TABLE.createCriterion(
-                        new OpenTableTrigger.TriggerInstance(Optional.empty(), MinMaxBounds.Ints.atLeast(120), Optional.empty(), false)
+                        new OpenTableTrigger.TriggerInstance(Optional.empty(), MinMaxBounds.Ints.atLeast(300), Optional.empty(), false)
                 ))
                 .rewards(new AdvancementRewards.Builder()
                         .addExperience(100)
                 )
+        );
+
+        var extractEnchantment = register(Penchant.id("extract_enchantment"), Items.GRINDSTONE, AdvancementType.TASK, consumer, builder -> builder
+                .parent(enchanter)
+                .addCriterion("extract", PenchantAdvancements.EXTRACT_ENCHANTMENT.createCriterion(
+                        new ExtractEnchantmentTrigger.TriggerInstance(Optional.empty(), ItemPredicate.Builder.item().build(), Optional.empty())
+                ))
         );
     }
 }

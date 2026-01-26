@@ -22,5 +22,7 @@
   "advancements.penchant.full_library.title": "Full Library",
   "advancements.penchant.full_library.description": "Provide an enchanting table with at least 45 books",
   "advancements.penchant.babel.title": "Babel",
-  "advancements.penchant.babel.description": "Provide an enchanting table with over 120 books"
+  "advancements.penchant.babel.description": "Provide an enchanting table with over 300 books",
+  "advancements.penchant.extract_enchantment.title": "Reverse Engineering",
+  "advancements.penchant.extract_enchantment.description": "Extract enchantments from found gear"
 }

@@ -4,7 +4,7 @@
     "has_books": {
       "conditions": {
         "book_count": {
-          "min": 120
+          "min": 300
         }
       },
       "trigger": "penchant:open_table"

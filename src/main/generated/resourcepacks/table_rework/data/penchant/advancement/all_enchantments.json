@@ -561,106 +561,106 @@
   },
   "requirements": [
     [
-      "minecraft:silk_touch"
-    ],
-    [
-      "minecraft:looting"
-    ],
-    [
-      "minecraft:efficiency"
-    ],
-    [
-      "minecraft:fire_aspect"
-    ],
-    [
-      "minecraft:channeling"
-    ],
-    [
-      "minecraft:respiration"
-    ],
-    [
-      "minecraft:aqua_affinity"
-    ],
-    [
-      "minecraft:breach"
-    ],
-    [
-      "minecraft:frost_walker"
-    ],
-    [
-      "minecraft:multishot"
+      "minecraft:mending"
     ],
     [
       "minecraft:soul_speed"
     ],
     [
-      "minecraft:fire_protection"
-    ],
-    [
-      "minecraft:bane_of_arthropods"
-    ],
-    [
-      "minecraft:mending"
-    ],
-    [
-      "minecraft:swift_sneak"
-    ],
-    [
-      "minecraft:punch"
-    ],
-    [
-      "minecraft:wind_burst"
-    ],
-    [
-      "minecraft:luck_of_the_sea"
-    ],
-    [
-      "minecraft:lunge"
+      "minecraft:looting"
     ],
     [
       "minecraft:sweeping_edge"
     ],
     [
+      "minecraft:lunge"
+    ],
+    [
+      "minecraft:silk_touch"
+    ],
+    [
       "minecraft:fortune"
     ],
     [
-      "minecraft:binding_curse"
+      "minecraft:bane_of_arthropods"
     ],
     [
-      "minecraft:blast_protection"
+      "minecraft:swift_sneak"
     ],
     [
-      "minecraft:infinity"
-    ],
-    [
-      "minecraft:smite"
+      "minecraft:respiration"
     ],
     [
       "minecraft:thorns"
     ],
     [
+      "minecraft:density"
+    ],
+    [
+      "minecraft:frost_walker"
+    ],
+    [
+      "minecraft:riptide"
+    ],
+    [
+      "minecraft:fire_protection"
+    ],
+    [
+      "minecraft:blast_protection"
+    ],
+    [
+      "minecraft:depth_strider"
+    ],
+    [
+      "minecraft:projectile_protection"
+    ],
+    [
+      "minecraft:feather_falling"
+    ],
+    [
+      "minecraft:infinity"
+    ],
+    [
+      "minecraft:luck_of_the_sea"
+    ],
+    [
+      "minecraft:smite"
+    ],
+    [
+      "minecraft:breach"
+    ],
+    [
+      "minecraft:punch"
+    ],
+    [
+      "minecraft:channeling"
+    ],
+    [
+      "minecraft:binding_curse"
+    ],
+    [
+      "minecraft:fire_aspect"
+    ],
+    [
+      "minecraft:aqua_affinity"
+    ],
+    [
       "minecraft:knockback"
+    ],
+    [
+      "minecraft:efficiency"
+    ],
+    [
+      "minecraft:wind_burst"
+    ],
+    [
+      "minecraft:multishot"
     ],
     [
       "minecraft:vanishing_curse"
     ],
     [
       "minecraft:flame"
-    ],
-    [
-      "minecraft:feather_falling"
-    ],
-    [
-      "minecraft:projectile_protection"
-    ],
-    [
-      "minecraft:depth_strider"
-    ],
-    [
-      "minecraft:density"
-    ],
-    [
-      "minecraft:riptide"
     ]
   ],
   "sends_telemetry_event": true

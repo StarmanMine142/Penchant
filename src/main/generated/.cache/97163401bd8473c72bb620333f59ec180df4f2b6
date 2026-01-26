@@ -1,5 +1,6 @@
 // 1.21.11	-999999999-01-01T00:00:00	penchant:table_rework/Advancements
-44a53d572b35c764c5926f2498957297e7cecdf8 resourcepacks/table_rework/data/penchant/advancement/all_enchantments.json
-16f64bbed5e2a1e191449ed74218e1814111d257 resourcepacks/table_rework/data/penchant/advancement/babel.json
+6e98eef583a896a8c768899a2c8967fc1c804556 resourcepacks/table_rework/data/penchant/advancement/all_enchantments.json
+3a04f7ba5482d4f2e7be55706881060919d25c96 resourcepacks/table_rework/data/penchant/advancement/babel.json
 421df931b9a04d6ff2731c2ba6a29a60297955dc resourcepacks/table_rework/data/penchant/advancement/enchanted_bookshelf.json
+ef34855a5b1f67dc48b2dc610f5eb7a1788975a8 resourcepacks/table_rework/data/penchant/advancement/extract_enchantment.json
 8e33a804662774e8c520fe9ffb552b4920b39d15 resourcepacks/table_rework/data/penchant/advancement/full_library.json

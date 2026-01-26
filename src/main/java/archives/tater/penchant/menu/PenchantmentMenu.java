@@ -188,13 +188,14 @@ public class PenchantmentMenu extends AbstractContainerMenu {
 
     public void sendEnchantments() {
         access.execute((level, pos) -> {
-            var unlockedEnchantments = player.hasInfiniteMaterials()
+            var unlockedEnchantments = getUnlockedEnchantments(level, pos);
+            var effectiveUnlockedEnchantments = player.hasInfiniteMaterials()
                     ? enchantments.listElements().<Holder<Enchantment>>map(Function.identity()).collect(Collectors.toSet())
-                    : getUnlockedEnchantments(level, pos);
-            setUnlockedEnchantments(unlockedEnchantments);
-            ServerPlayNetworking.send((ServerPlayer) player, new UnlockedEnchantmentsPayload(unlockedEnchantments));
+                    : unlockedEnchantments;
+            setUnlockedEnchantments(effectiveUnlockedEnchantments);
+            ServerPlayNetworking.send((ServerPlayer) player, new UnlockedEnchantmentsPayload(effectiveUnlockedEnchantments));
 
-            PenchantAdvancements.OPEN_TABLE.trigger((ServerPlayer) player, getBookCount(), availableEnchantments);
+            PenchantAdvancements.OPEN_TABLE.trigger((ServerPlayer) player, getBookCount(), unlockedEnchantments);
         });
     }
 
@@ -238,13 +239,17 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             }
             access.execute((level, pos) -> {
 
-                enchantSlots.setItem(0, PenchantmentHelper.updateEnchantments(stack, enchantments -> {
+                var newStack = PenchantmentHelper.updateEnchantments(stack, enchantments -> {
                     enchantments.set(enchantment, 0);
-                }));
+                });
+                enchantSlots.setItem(0, newStack);
 
                 enchantSlots.setItem(1, PenchantmentHelper.updateEnchantments(ingredientStack, enchantments -> {
                     enchantments.set(enchantment, 1);
                 }));
+
+                if (player instanceof ServerPlayer serverPlayer)
+                    PenchantAdvancements.EXTRACT_ENCHANTMENT.trigger(serverPlayer, newStack, enchantment);
 
                 level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
                 enchantSlots.setChanged();
