@@ -8,7 +8,12 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
 import net.minecraft.resources.Identifier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PenchantDataGenerator implements DataGeneratorEntrypoint {
+    private static final Logger log = LoggerFactory.getLogger(PenchantDataGenerator.class);
+
     private static FabricDataGenerator.Pack createPack(FabricDataGenerator fabricDataGenerator, Identifier id) {
         var pack = fabricDataGenerator.createBuiltinResourcePack(id);
         pack.addProvider(PackMetaGen.pack(id));
@@ -38,6 +43,7 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
         tablePack.addProvider(TableAdvancementGenerator::new);
 
         var lootPack = createPack(fabricDataGenerator, Penchant.LOOT_REWORK);
+        lootPack.addProvider(FlagTagGenerator.generator(PenchantFlag.ZOMBIE_SPAWN_PICKAXE));
         lootPack.addProvider(LootEnchantmentTagGenerator::new);
         lootPack.addProvider(LootAdvancementGenerator::new);
         lootPack.addProvider(LootEnchantmentProviderGenerator::new);
