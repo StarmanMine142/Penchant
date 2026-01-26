@@ -24,6 +24,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
+import org.jspecify.annotations.Nullable;
 
 @Mixin(AnvilMenu.class)
 public abstract class AnvilMenuMixin {
@@ -31,7 +32,7 @@ public abstract class AnvilMenuMixin {
             method = "createResult",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getEnchantmentsForCrafting(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/enchantment/ItemEnchantments;", ordinal = 0)
     )
-    private void saveProgress(CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress.Mutable> progress, @Local(ordinal = 1) ItemStack result, @Local(ordinal = 2) ItemStack sacrifice) {
+    private void saveProgress(CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress.@Nullable Mutable> progress, @Local(ordinal = 1) ItemStack result, @Local(ordinal = 2) ItemStack sacrifice) {
         if (!result.has(DataComponents.STORED_ENCHANTMENTS) && !sacrifice.has(DataComponents.STORED_ENCHANTMENTS))
             progress.set(result.getOrDefault(PenchantComponents.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY).toMutable());
     }
@@ -49,7 +50,7 @@ public abstract class AnvilMenuMixin {
             method = "createResult",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments$Mutable;set(Lnet/minecraft/core/Holder;I)V")
     )
-    private void sumProgress(ItemEnchantments.Mutable instance, Holder<Enchantment> enchantment, int level, Operation<Void> original, @Share("progress") LocalRef<EnchantmentProgress.Mutable> progressRef, @Local(ordinal = 2) ItemStack sacrifice, @Local Entry<Holder<Enchantment>> entry) {
+    private void sumProgress(ItemEnchantments.Mutable instance, Holder<Enchantment> enchantment, int level, Operation<Void> original, @Share("progress") LocalRef<EnchantmentProgress.@Nullable Mutable> progressRef, @Local(ordinal = 2) ItemStack sacrifice, @Local Entry<Holder<Enchantment>> entry) {
         var progress = progressRef.get();
         if (progress == null || enchantment.is(PenchantEnchantmentTags.NO_LEVELING)) {
             original.call(instance, enchantment, level);
@@ -70,7 +71,7 @@ public abstract class AnvilMenuMixin {
             method = "createResult",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments$Mutable;toImmutable()Lnet/minecraft/world/item/enchantment/ItemEnchantments;")
     )
-    private ItemEnchantments setProgress(ItemEnchantments.Mutable instance, Operation<ItemEnchantments> original, @Share("progress") LocalRef<EnchantmentProgress.Mutable> progressRef, @Local(ordinal = 1) ItemStack result) {
+    private ItemEnchantments setProgress(ItemEnchantments.Mutable instance, Operation<ItemEnchantments> original, @Share("progress") LocalRef<EnchantmentProgress.@Nullable Mutable> progressRef, @Local(ordinal = 1) ItemStack result) {
         var progress = progressRef.get();
         if (progress != null) {
             result.set(PenchantComponents.ENCHANTMENT_PROGRESS, progress.toImmutable());

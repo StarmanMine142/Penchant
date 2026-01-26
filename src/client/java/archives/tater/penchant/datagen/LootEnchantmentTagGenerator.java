@@ -53,6 +53,7 @@ public class LootEnchantmentTagGenerator extends FabricTagProvider<Enchantment> 
     );
 
     public static final List<ResourceKey<Enchantment>> COMMON = List.of(
+            Enchantments.EFFICIENCY,
             Enchantments.PROTECTION,
             Enchantments.SHARPNESS,
             Enchantments.UNBREAKING,

@@ -12,6 +12,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -127,6 +128,24 @@ public class EnchantmentProgress {
                 newProgress.addProgress(enchantment, increase);
 
         updateEnchantmentsForStack(newProgress, enchantments, stack, user);
+
+        stack.set(PenchantComponents.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
+    }
+
+    public static void addRandomProgress(ItemStack stack, RandomSource random) {
+        var enchantments = stack.getEnchantments();
+        if (enchantments.isEmpty()) return;
+
+        var newProgress = new Mutable(EnchantmentProgress.EMPTY);
+
+        for (var enchantment : enchantments.keySet()) {
+            var level = enchantments.getLevel(enchantment);
+            if (!enchantment.is(PenchantEnchantmentTags.NO_LEVELING) && level < enchantment.value().getMaxLevel())
+                newProgress.setProgress(enchantment,
+                        (int) (random.nextFloat() * getMaxProgress(enchantment, level, stack.getMaxDamage())));
+        }
+
+        if (newProgress.progress.isEmpty()) return;
 
         stack.set(PenchantComponents.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
     }

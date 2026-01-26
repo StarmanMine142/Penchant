@@ -15,8 +15,10 @@
     "effect.ItemStackMixin",
     "leveling.AnvilMenuMixin",
     "leveling.CreativeModeTabsMixin",
-    "leveling.EnchantCommandMixin",
+    "leveling.EnchantmentHelperMixin",
+    "leveling.EnchantmentMenuMixin",
     "leveling.EnchantRandomlyFunctionMixin",
+    "leveling.EnchantWithLevelsFunctionMixin",
     "leveling.ItemStackMixin",
     "table.EnchantingTableBlockMixin",
     "table.EnchantmentMenuMixin"
