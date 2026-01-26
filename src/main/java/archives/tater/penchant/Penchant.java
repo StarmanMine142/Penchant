@@ -1,5 +1,6 @@
 package archives.tater.penchant;
 
+import archives.tater.penchant.loot.LootModification;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
@@ -62,6 +63,7 @@ public class Penchant implements ModInitializer {
         PenchantEnchantments.init();
         PenchantMenus.init();
         PenchantAdvancements.init();
+        LootModification.register();
 
         PayloadTypeRegistry.playS2C().register(UnlockedEnchantmentsPayload.TYPE, UnlockedEnchantmentsPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(EnchantPayload.TYPE, EnchantPayload.CODEC);

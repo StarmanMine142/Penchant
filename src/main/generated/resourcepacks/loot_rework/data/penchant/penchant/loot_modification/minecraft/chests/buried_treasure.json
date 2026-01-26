@@ -1,0 +1,17 @@
+{
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "penchant:inject/minecraft/chests/buried_treasure"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "targets": [
+    "minecraft:chests/buried_treasure"
+  ]
+}

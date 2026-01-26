@@ -1,0 +1,17 @@
+{
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "penchant:inject/minecraft/chests/igloo_chest"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "targets": [
+    "minecraft:chests/igloo_chest"
+  ]
+}
