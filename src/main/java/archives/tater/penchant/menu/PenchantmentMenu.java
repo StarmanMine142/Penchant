@@ -2,6 +2,7 @@ package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+import archives.tater.penchant.registry.PenchantAdvancements;
 import archives.tater.penchant.registry.PenchantBlockTags;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
 import archives.tater.penchant.registry.PenchantMenus;
@@ -192,6 +193,8 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                     : getUnlockedEnchantments(level, pos);
             setUnlockedEnchantments(unlockedEnchantments);
             ServerPlayNetworking.send((ServerPlayer) player, new UnlockedEnchantmentsPayload(unlockedEnchantments));
+
+            PenchantAdvancements.OPEN_TABLE.trigger((ServerPlayer) player, getBookCount(), availableEnchantments);
         });
     }
 

@@ -3,10 +3,7 @@ package archives.tater.penchant;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
-import archives.tater.penchant.registry.PenchantComponents;
-import archives.tater.penchant.registry.PenchantEnchantments;
-import archives.tater.penchant.registry.PenchantFlag;
-import archives.tater.penchant.registry.PenchantMenus;
+import archives.tater.penchant.registry.*;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -56,6 +53,7 @@ public class Penchant implements ModInitializer {
         PenchantComponents.init();
         PenchantEnchantments.init();
         PenchantMenus.init();
+        PenchantAdvancements.init();
 
         PayloadTypeRegistry.playS2C().register(UnlockedEnchantmentsPayload.TYPE, UnlockedEnchantmentsPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(EnchantPayload.TYPE, EnchantPayload.CODEC);

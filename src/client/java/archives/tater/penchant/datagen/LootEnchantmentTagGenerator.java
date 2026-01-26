@@ -14,9 +14,56 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class LootEnchantmentTagGenerator extends FabricTagProvider<Enchantment> {
+
+    public static final List<ResourceKey<Enchantment>> RARE = List.of(
+            Enchantments.FROST_WALKER,
+            Enchantments.FIRE_ASPECT,
+            Enchantments.FLAME,
+            Enchantments.SILK_TOUCH,
+            Enchantments.FORTUNE,
+            Enchantments.LUNGE,
+            Enchantments.CHANNELING,
+            Enchantments.RIPTIDE,
+            Enchantments.THORNS,
+            Enchantments.INFINITY
+    );
+
+    public static final List<ResourceKey<Enchantment>> UNCOMMON = List.of(
+            Enchantments.RESPIRATION,
+            Enchantments.AQUA_AFFINITY,
+            Enchantments.DEPTH_STRIDER,
+            Enchantments.FEATHER_FALLING,
+            Enchantments.FIRE_PROTECTION,
+            Enchantments.BLAST_PROTECTION,
+            Enchantments.PROJECTILE_PROTECTION,
+            Enchantments.SMITE,
+            Enchantments.BANE_OF_ARTHROPODS,
+            Enchantments.SWEEPING_EDGE,
+            Enchantments.KNOCKBACK,
+            Enchantments.PUNCH,
+            Enchantments.MULTISHOT,
+            Enchantments.DENSITY,
+            Enchantments.BREACH,
+            Enchantments.LOOTING,
+            Enchantments.LUCK_OF_THE_SEA
+    );
+
+    public static final List<ResourceKey<Enchantment>> COMMON = List.of(
+            Enchantments.PROTECTION,
+            Enchantments.SHARPNESS,
+            Enchantments.UNBREAKING,
+            Enchantments.POWER,
+            Enchantments.PIERCING,
+            Enchantments.QUICK_CHARGE,
+            Enchantments.IMPALING,
+            Enchantments.LOYALTY,
+            Enchantments.LURE
+    );
+
     public LootEnchantmentTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, Registries.ENCHANTMENT, registriesFuture);
     }
@@ -28,53 +75,17 @@ public class LootEnchantmentTagGenerator extends FabricTagProvider<Enchantment> 
         var common = TagKey.create(Registries.ENCHANTMENT, Penchant.id("common"));
 
         //noinspection unchecked
-        builder(rare).add(
-                Enchantments.FROST_WALKER,
-                Enchantments.FIRE_ASPECT,
-                Enchantments.FLAME,
-                Enchantments.SILK_TOUCH,
-                Enchantments.FORTUNE,
-                Enchantments.LUNGE,
-                Enchantments.CHANNELING,
-                Enchantments.RIPTIDE,
-                Enchantments.THORNS,
-                Enchantments.INFINITY
-        );
+        builder(rare)
+                .add(RARE.toArray(ResourceKey[]::new));
 
         //noinspection unchecked
-        builder(uncommon).add(
-                Enchantments.RESPIRATION,
-                Enchantments.AQUA_AFFINITY,
-                Enchantments.DEPTH_STRIDER,
-                Enchantments.FEATHER_FALLING,
-                Enchantments.FIRE_PROTECTION,
-                Enchantments.BLAST_PROTECTION,
-                Enchantments.PROJECTILE_PROTECTION,
-                Enchantments.SMITE,
-                Enchantments.BANE_OF_ARTHROPODS,
-                Enchantments.SWEEPING_EDGE,
-                Enchantments.KNOCKBACK,
-                Enchantments.PUNCH,
-                Enchantments.MULTISHOT,
-                Enchantments.DENSITY,
-                Enchantments.BREACH,
-                Enchantments.LOOTING,
-                Enchantments.LUCK_OF_THE_SEA
-        )
+        builder(uncommon)
+                .add(UNCOMMON.toArray(ResourceKey[]::new))
                 .addOptional(ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath("farmersdelight", "backstabbing")));
 
         //noinspection unchecked
-        builder(common).add(
-                Enchantments.PROTECTION,
-                Enchantments.SHARPNESS,
-                Enchantments.UNBREAKING,
-                Enchantments.POWER,
-                Enchantments.PIERCING,
-                Enchantments.QUICK_CHARGE,
-                Enchantments.IMPALING,
-                Enchantments.LOYALTY,
-                Enchantments.LURE
-        );
+        builder(common)
+                .add(COMMON.toArray(ResourceKey[]::new));
 
         builder(EnchantmentTags.TREASURE)
                 .addTag(rare);

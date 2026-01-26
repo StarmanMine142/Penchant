@@ -26,6 +26,7 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
                 PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT,
                 PenchantFlag.NO_ANVIL_BOOKS
         ));
+        tablePack.addProvider(AdvancementGenerator::new);
         tablePack.addProvider(PackMetaGen.pack(Penchant.TABLE_REWORK));
 
         var lootPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.LOOT_REWORK);

@@ -1,0 +1,35 @@
+{
+  "parent": "penchant:full_library",
+  "criteria": {
+    "has_books": {
+      "conditions": {
+        "book_count": {
+          "min": 120
+        }
+      },
+      "trigger": "penchant:open_table"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.penchant.babel.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:bookshelf"
+    },
+    "title": {
+      "translate": "advancements.penchant.babel.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_books"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}
