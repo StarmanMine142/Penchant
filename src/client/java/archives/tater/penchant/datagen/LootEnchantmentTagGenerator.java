@@ -20,16 +20,16 @@ import java.util.concurrent.CompletableFuture;
 public class LootEnchantmentTagGenerator extends FabricTagProvider<Enchantment> {
 
     public static final List<ResourceKey<Enchantment>> RARE = List.of(
-            Enchantments.FROST_WALKER,
-            Enchantments.FIRE_ASPECT,
-            Enchantments.FLAME,
-            Enchantments.SILK_TOUCH,
-            Enchantments.FORTUNE,
-            Enchantments.LUNGE,
-            Enchantments.CHANNELING,
-            Enchantments.RIPTIDE,
-            Enchantments.THORNS,
-            Enchantments.INFINITY
+            Enchantments.FROST_WALKER, // igloo
+            Enchantments.FIRE_ASPECT, // Nether fortress
+            Enchantments.FLAME, // nether fortress
+            Enchantments.SILK_TOUCH, // mineshaft, dungeon
+            Enchantments.FORTUNE, // mineshaft, dungeon
+            Enchantments.LUNGE, // jockeys
+            Enchantments.CHANNELING, // ruins, buried treasure
+            Enchantments.RIPTIDE, // ruins, buried treasure
+            Enchantments.THORNS, // dungeon
+            Enchantments.INFINITY // dungeon
     );
 
     public static final List<ResourceKey<Enchantment>> UNCOMMON = List.of(
