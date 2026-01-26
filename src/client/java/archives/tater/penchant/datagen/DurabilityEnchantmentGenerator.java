@@ -38,8 +38,8 @@ public class DurabilityEnchantmentGenerator extends FabricDynamicRegistryProvide
                 Optional.empty(),
                 5,
                 5,
-                new Enchantment.Cost(5, 8),
-                new Enchantment.Cost(35, 8),
+                new Enchantment.Cost(5, 20),
+                new Enchantment.Cost(35, 20),
                 1,
                 List.of(EquipmentSlotGroup.ANY)
         ))
