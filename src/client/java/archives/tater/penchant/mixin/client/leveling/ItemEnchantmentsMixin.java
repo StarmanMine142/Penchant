@@ -30,7 +30,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -53,7 +53,7 @@ public class ItemEnchantmentsMixin {
             method = "addToTooltip",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;")
     )
-    private Component hideLevel(Holder<@NotNull Enchantment> holder, int i, Operation<Component> original, @Share("progress") LocalRef<EnchantmentProgress> progress, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level) {
+    private Component hideLevel(Holder<Enchantment> holder, int i, Operation<Component> original, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progress, @Share("enchantmentShare") LocalRef<@Nullable Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level) {
         if (holder.is(PenchantEnchantmentTags.NO_LEVELING)) return original.call(holder, i);
         if (progress.get() == null) return PenchantmentHelper.getName(holder);
         enchantmentShare.set(holder);
@@ -65,16 +65,17 @@ public class ItemEnchantmentsMixin {
             method = "addToTooltip",
             at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V")
     )
-    private <T> void addProgress(Consumer<T> instance, T text, Operation<Void> original, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantment, @Share("level") LocalIntRef level, @Share("progress") LocalRef<EnchantmentProgress> progress, @Local(argsOnly = true) DataComponentGetter components) {
+    private <T> void addProgress(Consumer<T> instance, T text, Operation<Void> original, @Share("enchantmentShare") LocalRef<@Nullable Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progress, @Local(argsOnly = true) DataComponentGetter components) {
         original.call(instance, text);
 
-        if (enchantment.get() == null) return;
+        var enchantment = enchantmentShare.get();
+        if (enchantment == null) return;
         if (!PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
-        if (!EnchantmentProgress.shouldShowTooltip(enchantment.get())) return;
+        if (!EnchantmentProgress.shouldShowTooltip(enchantment)) return;
 
         original.call(instance, PenchantClient.getProgressTooltip(
                 progress.get(),
-                enchantment.get(),
+                enchantment,
                 level.get(),
                 components instanceof ItemStack stack ? stack.getMaxDamage() : components.getOrDefault(DataComponents.MAX_DAMAGE, 0)
         ));
@@ -84,7 +85,7 @@ public class ItemEnchantmentsMixin {
             method = "addToTooltip",
             at = @At("TAIL")
     )
-    private void addHint(TooltipContext context, Consumer<Component> tooltipAdder, TooltipFlag flag, DataComponentGetter componentGetter, CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress> progress) {
+    private void addHint(TooltipContext context, Consumer<Component> tooltipAdder, TooltipFlag flag, DataComponentGetter componentGetter, CallbackInfo ci, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progress) {
         if (progress.get() == null || enchantments.isEmpty() || PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
 
         tooltipAdder.accept(PenchantClient.getProgressKeyHint());

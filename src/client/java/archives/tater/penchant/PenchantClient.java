@@ -22,8 +22,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-import org.jetbrains.annotations.NotNull;
-
 import static net.minecraft.util.Util.makeDescriptionId;
 
 
@@ -46,7 +44,7 @@ public class PenchantClient implements ClientModInitializer {
                 .withStyle(ChatFormatting.DARK_GRAY);
     }
 
-    public static Component getProgressTooltip(EnchantmentProgress progress, Holder<@NotNull Enchantment> enchantment, int level, int maxDamage) {
+    public static Component getProgressTooltip(EnchantmentProgress progress, Holder<Enchantment> enchantment, int level, int maxDamage) {
         if (level >= enchantment.value().getMaxLevel())
             return Component.literal("  ")
                     .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH))

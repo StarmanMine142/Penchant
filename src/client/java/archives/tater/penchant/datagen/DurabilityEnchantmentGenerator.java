@@ -18,8 +18,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.RemoveBinomial;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -67,7 +65,7 @@ public class DurabilityEnchantmentGenerator extends FabricDynamicRegistryProvide
     }
 
     @Override
-    public @NotNull String getName() {
+    public String getName() {
         return "Enchantments";
     }
 }
