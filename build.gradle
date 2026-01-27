@@ -21,6 +21,19 @@ repositories {
         url = 'https://maven.parchmentmc.org'
     }
 	maven { url 'https://jitpack.io' }
+    maven {
+        name = "cassian's maven"
+        url = "https://maven.cassian.cc"
+    }
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven { url 'https://repo.sleeping.town/' }
+    maven {
+        name = "Xander Maven"
+        url = "https://maven.isxander.dev/releases"
+    }
 }
 
 loom {
@@ -55,6 +68,9 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation include("com.github.ThePotatoArchivist:TagExclusion:${project.tagex_version}")
+
+    modCompileOnly modLocalRuntime("cc.cassian.item-descriptions:item-descriptions-fabric:${project.item_descriptions_version}+${project.minecraft_version}")
+    compileOnly localRuntime("folk.sisby:kaleido-config:${project.kaleido_version}")
 }
 
 processResources {

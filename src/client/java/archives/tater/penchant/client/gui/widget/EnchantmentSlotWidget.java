@@ -19,9 +19,13 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.FontDescription;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import cc.cassian.item_descriptions.client.DescriptionKey;
+import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.helpers.ModStyle;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -99,6 +103,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
             ));
         } else {
             var tooltip = PenchantmentHelper.getName(enchantment).copy();
+
             if (!incompatible.isEmpty()) tooltip
                     .append(Component.literal("\n"))
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.incompatible", ComponentUtils.formatList(incompatible, holder -> holder.value().description()))
@@ -111,6 +116,14 @@ public class EnchantmentSlotWidget extends AbstractButton {
                     .append("\n")
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
                             .withColor(hasEnoughXp ? XP_COLOR : INSUFFICIENT_COLOR));
+
+            if (PenchantmentHelper.ITEM_DESCRIPTIONS_INSTALLED
+                    && ModClient.CONFIG.enchantmentDescriptions.enable.value()
+                    && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()
+                    && Enchantment.getFullname(enchantment, 1).getContents() instanceof TranslatableContents content)
+                tooltip
+                        .append("\n")
+                        .append(new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS));
 
             setTooltip(Tooltip.create(tooltip));
         }

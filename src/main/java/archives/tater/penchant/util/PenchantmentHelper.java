@@ -3,6 +3,7 @@ package archives.tater.penchant.util;
 import archives.tater.penchant.registry.PenchantFlag;
 
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -29,6 +30,8 @@ import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
 public class PenchantmentHelper {
+    public static final boolean ITEM_DESCRIPTIONS_INSTALLED = FabricLoader.getInstance().isModLoaded("item_descriptions");
+
     private PenchantmentHelper() {}
 
     public static List<BlockPos> LENIENT_BOOKSHELF_OFFSETS = BlockPos.betweenClosedStream(-3, -2, -3, 3, 2, 3)
