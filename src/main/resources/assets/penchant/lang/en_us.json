@@ -1,7 +1,9 @@
 {
   "penchant.tooltip.progress": "%s/%s",
   "penchant.tooltip.progress.max": "MAX",
-  "penchant.tooltip.progress.key": "See progress: [%s]",
+  "penchant.tooltip.progress.key": "[%s] See progress",
+  "key.category.penchant.penchant": "Penchant",
+  "key.penchant.show_progress": "Show Enchantment Progress",
   "widget.penchant.enchantment_slot.incompatible": "!",
   "widget.penchant.enchantment_slot.tooltip.added": "Added",
   "widget.penchant.enchantment_slot.tooltip.name_locked": " . . . ?",
