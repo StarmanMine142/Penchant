@@ -67,9 +67,9 @@ public class Penchant implements ModInitializer {
         PenchantAdvancements.init();
         LootModification.register();
 
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {
-            PenchantmentDefinition.buildCache(server.registryAccess());
-        });
+        ServerLifecycleEvents.SERVER_STARTED.register(server ->
+            PenchantmentDefinition.buildCache(server.registryAccess())
+        );
 
         PayloadTypeRegistry.playS2C().register(UnlockedEnchantmentsPayload.TYPE, UnlockedEnchantmentsPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(EnchantPayload.TYPE, EnchantPayload.CODEC);

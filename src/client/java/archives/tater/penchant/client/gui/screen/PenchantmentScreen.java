@@ -15,11 +15,11 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.book.BookModel;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.Holder;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.objects.AtlasSprite;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -108,21 +108,25 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         leftPos + 60,
                         topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                         enchantment,
-                        !enchantment.is(EnchantmentTags.CURSE) &&
-                                EnchantmentHelper.isEnchantmentCompatible(PenchantmentHelper.getEnchantments(menu.getIngredientStack()).keySet(), enchantment)
+                        getIncompatible(menu.getIngredientStack(), enchantment),
+                        creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount()
                 ));
             else
                 addRenderableWidget(new EnchantmentSlotWidget(
                         leftPos + 60,
                         topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                         enchantment,
-                        PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> !enchantment.equals(other) && !Enchantment.areCompatible(enchantment, other)).toList(),
+                        getIncompatible(stack, enchantment),
                         !PenchantmentHelper.hasEnchantment(stack, enchantment),
                         creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount(),
                         creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
                         menu.isAvailable(enchantment)
                 ));
         }
+    }
+
+    private List<Holder<Enchantment>> getIncompatible(ItemStack stack, Holder<Enchantment> enchantment) {
+        return PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> !enchantment.equals(other) && !Enchantment.areCompatible(enchantment, other)).toList();
     }
 
     @Override

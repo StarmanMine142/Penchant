@@ -9,7 +9,6 @@
   "widget.penchant.enchantment_slot.tooltip.name_locked": " . . . ?",
   "widget.penchant.enchantment_slot.tooltip.locked": "Unknown enchantment! Find a corresponding book and place it nearby to unlock",
   "widget.penchant.enchantment_slot.tooltip.remove": "Remove %s from item",
-  "widget.penchant.enchantment_slot.tooltip.remove.disabled": "Cannot remove %s from item",
   "widget.penchant.enchantment_slot.tooltip.xp_cost": "Costs %s levels",
   "widget.penchant.enchantment_slot.tooltip.book_requirement": "Requires %s books",
   "widget.penchant.enchantment_slot.tooltip.incompatible": "Incompatible with %s",

@@ -232,7 +232,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         } else if (isDisenchanting()) {
             var ingredientStack = getIngredientStack();
             if (!PenchantmentHelper.hasEnchantment(stack, enchantment)
-                    || enchantment.is(EnchantmentTags.CURSE)
+                    || getBookCount() < PenchantmentHelper.getBookRequirement(enchantment)
                     || !EnchantmentHelper.isEnchantmentCompatible(PenchantmentHelper.getEnchantments(ingredientStack).keySet(), enchantment)) {
                 Penchant.LOGGER.warn("Cannot disenchant!");
                 return;
