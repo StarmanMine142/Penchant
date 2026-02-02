@@ -24,7 +24,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import org.jspecify.annotations.Nullable;
 
@@ -49,6 +48,10 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private static final List<Identifier> INGREDIENT_SLOT_TEXTURES_NO_DISENCHANT = List.of(
             LAPIS_LAZULI_SLOT_TEXTURE
     );
+    private static final Component ENCHANTING_SLOT_TOOLTIP = Component.translatable("container.penchant.enchant.slot.enchant");
+    private static final Component INGREDIENT_SLOT_TOOLTIP = Component.translatable("container.penchant.enchant.slot.ingredient");
+    private static final Component INGREDIENT_SLOT_DISENCHANT_TOOLTIP = Component.translatable("container.penchant.enchant.slot.ingredient.disenchant");
+    private static final int TOOLTIP_WIDTH = 115;
 
     private final ScrollbarComponent scrollbar = new ScrollbarComponent(
             SCROLLLER_TEXTURE,
@@ -197,8 +200,16 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var gamePartialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
         super.render(guiGraphics, mouseX, mouseY, gamePartialTick);
 
-        renderTooltip(guiGraphics, mouseX, mouseY);
-
+        if (hoveredSlot != null && !hoveredSlot.hasItem())
+            guiGraphics.setTooltipForNextFrame(font, font.split(
+                    hoveredSlot.index == 0
+                            ? ENCHANTING_SLOT_TOOLTIP
+                            : menu.canDisenchant()
+                                    ? INGREDIENT_SLOT_DISENCHANT_TOOLTIP
+                                    : INGREDIENT_SLOT_TOOLTIP,
+                    TOOLTIP_WIDTH), mouseX, mouseY);
+        else
+            renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     public void tickBook() {

@@ -16,6 +16,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -48,6 +49,8 @@ import java.util.stream.Stream;
 import static archives.tater.penchant.util.PenchantUtil.streamOrdered;
 
 public class PenchantmentMenu extends AbstractContainerMenu {
+    public static final Component TITLE = Component.translatable("container.penchant.enchant");
+
     private final Container enchantSlots = new SimpleContainer(2) {
         @Override
         public void setChanged() {
