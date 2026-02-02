@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 import static net.minecraft.world.level.storage.loot.LootPool.lootPool;
 import static net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem;
@@ -81,14 +82,15 @@ public class LootModificationGenerator extends FabricDynamicRegistryProvider {
         addInject(entries, BuiltInLootTables.ABANDONED_MINESHAFT, createBooks(registry, 8, Enchantments.SILK_TOUCH, Enchantments.FORTUNE));
         addInject(entries, BuiltInLootTables.SIMPLE_DUNGEON, createBooks(registry, 14, Enchantments.SILK_TOUCH, Enchantments.FORTUNE));
         addInject(entries, BuiltInLootTables.SHIPWRECK_TREASURE, createBooks(registry, 18, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER));
-        addInject(entries, BuiltInLootTables.UNDERWATER_RUIN_SMALL,
-                createBooks(registry, 8, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER),
-                createBooks(registry, 18, Enchantments.CHANNELING, Enchantments.RIPTIDE)
-        );
-        addInject(entries, BuiltInLootTables.UNDERWATER_RUIN_BIG,
-                createBooks(registry, 8, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER),
-                createBooks(registry, 18, Enchantments.CHANNELING, Enchantments.RIPTIDE)
-        );
+        entries.add(ResourceKey.create(LootModification.KEY, Penchant.id("minecraft/chests/underwater_ruin")), new LootModification(
+                List.of(BuiltInLootTables.UNDERWATER_RUIN_SMALL, BuiltInLootTables.UNDERWATER_RUIN_BIG),
+                Stream.of(
+                        createBooks(registry, 8, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER),
+                        createBooks(registry, 18, Enchantments.CHANNELING, Enchantments.RIPTIDE)
+                ).map(LootPool.Builder::build).toList(),
+                List.of(),
+                Optional.empty()
+        ));
         addInject(entries, BuiltInLootTables.BURIED_TREASURE,
                 createBooks(registry, Enchantments.CHANNELING, Enchantments.RIPTIDE),
                 createBooks(registry, 8, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER)
