@@ -70,7 +70,7 @@ public class ItemEnchantmentsMixin {
 
         var enchantment = enchantmentShare.get();
         if (enchantment == null) return;
-        if (!PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
+        if (!PenchantClient.shouldShowProgress()) return;
         if (!EnchantmentProgress.shouldShowTooltip(enchantment)) return;
 
         original.call(instance, PenchantClient.getProgressTooltip(
@@ -86,7 +86,7 @@ public class ItemEnchantmentsMixin {
             at = @At("TAIL")
     )
     private void addHint(TooltipContext context, Consumer<Component> tooltipAdder, TooltipFlag flag, DataComponentGetter componentGetter, CallbackInfo ci, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progress) {
-        if (progress.get() == null || enchantments.isEmpty() || PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
+        if (progress.get() == null || enchantments.isEmpty() || !PenchantClient.shouldShowKeyHint()) return;
 
         tooltipAdder.accept(PenchantClient.getProgressKeyHint());
     }

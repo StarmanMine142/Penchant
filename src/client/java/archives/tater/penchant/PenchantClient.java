@@ -2,6 +2,7 @@ package archives.tater.penchant;
 
 import archives.tater.penchant.client.FontUtils;
 import archives.tater.penchant.client.KeyMappingExt;
+import archives.tater.penchant.client.PenchantClientConfig;
 import archives.tater.penchant.client.gui.screen.PenchantmentScreen;
 import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.menu.PenchantmentMenu;
@@ -12,6 +13,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Type;
@@ -39,7 +41,19 @@ public class PenchantClient implements ClientModInitializer {
             PENCHANT_CATEGORY
     );
 
-    public static final int BAR_WIDTH = 32;
+    public static final PenchantClientConfig CONFIG = PenchantClientConfig.createToml(FabricLoader.getInstance().getConfigDir(), Penchant.MOD_ID, "client", PenchantClientConfig.class);
+
+    public static boolean shouldShowProgress() {
+        return CONFIG.alwaysShowTooltipProgress || SHOW_PROGRESS_KEYBIND.isDownAnywhere();
+    }
+
+    public static boolean shouldShowKeyHint() {
+        return !shouldShowProgress() && CONFIG.showTooltipKeyHint;
+    }
+
+    public static int getBarWidth() {
+        return CONFIG.barWidth;
+    }
 
     public static Component getProgressKeyHint() {
         return Component.translatable("penchant.tooltip.progress.key", Component.keybind(SHOW_PROGRESS_KEYBIND.getName()))
@@ -49,7 +63,7 @@ public class PenchantClient implements ClientModInitializer {
     public static Component getProgressTooltip(EnchantmentProgress progress, Holder<Enchantment> enchantment, int level, int maxDamage) {
         if (level >= enchantment.value().getMaxLevel())
             return Component.literal("  ")
-                    .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH))
+                    .append(FontUtils.getBar(getBarWidth(), getBarWidth()))
                     .append(" ")
                     .append(Component.translatable("penchant.tooltip.progress.max"))
                     .withStyle(ChatFormatting.LIGHT_PURPLE);
@@ -57,7 +71,7 @@ public class PenchantClient implements ClientModInitializer {
         var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, level, maxDamage);
 
         return Component.literal("  ")
-                .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH * progress.getProgress(enchantment) / maxProgress))
+                .append(FontUtils.getBar(getBarWidth(), getBarWidth() * progress.getProgress(enchantment) / maxProgress))
                 .append(" ")
                 .append(Component.translatable("penchant.tooltip.progress",
                         Component.literal(Integer.toString(progress.getProgress(enchantment))).withStyle(ChatFormatting.LIGHT_PURPLE),
