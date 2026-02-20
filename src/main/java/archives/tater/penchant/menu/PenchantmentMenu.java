@@ -46,6 +46,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static archives.tater.penchant.util.PenchantUtil.streamOrdered;
+import static java.util.Comparator.comparingInt;
 
 public class PenchantmentMenu extends AbstractContainerMenu {
     private final Container enchantSlots = new SimpleContainer(2) {
@@ -272,13 +273,18 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             return;
         }
         if (isEnchanting()) {
-            var applicable = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
-                    .filter(enchantment -> !enchantment.is(PenchantEnchantmentTags.DISABLED) && PenchantmentHelper.canEnchantItem(stack, enchantment))
+            displayedEnchantments = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
+                    .filter(enchantment ->
+                            !enchantment.is(PenchantEnchantmentTags.DISABLED) &&
+                            PenchantmentHelper.canEnchantItem(stack, enchantment) &&
+                            (!enchantment.is(EnchantmentTags.CURSE) || availableEnchantments.contains(enchantment) || PenchantmentHelper.hasEnchantment(stack, enchantment))
+                    )
+                    .sorted(comparingInt(enchantment ->
+                            !availableEnchantments.contains(enchantment) && !PenchantmentHelper.hasEnchantment(stack, enchantment) ? 2
+                            : enchantment.is(EnchantmentTags.CURSE) ? 1
+                            : 0
+                    ))
                     .toList();
-            displayedEnchantments = Stream.concat(
-                    applicable.stream().filter(enchantment -> availableEnchantments.contains(enchantment) || PenchantmentHelper.hasEnchantment(stack, enchantment)),
-                    applicable.stream().filter(enchantment -> !availableEnchantments.contains(enchantment) && !PenchantmentHelper.hasEnchantment(stack, enchantment) && !enchantment.is(EnchantmentTags.CURSE))
-            ).toList();
         } else if (isDisenchanting()) {
             displayedEnchantments = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
                     .filter(enchantment -> PenchantmentHelper.hasEnchantment(stack, enchantment))
