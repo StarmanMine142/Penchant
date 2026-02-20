@@ -51,7 +51,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
     private final @Nullable Component costText;
     private final boolean isCurse;
 
-    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showXpCost, boolean canUse, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showCosts, boolean canUse, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
         super(x, y, WIDTH, HEIGHT, enchantment.value().description());
         this.enchantment = enchantment;
         isCurse = enchantment.is(EnchantmentTags.CURSE);
@@ -63,7 +63,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
         var xpCost = PenchantmentHelper.getXpLevelCost(enchantment);
         var bookRequirement = PenchantmentHelper.getBookRequirement(enchantment);
 
-        {
+        if (showCosts) {
             var costTexts = new ArrayList<Component>(3);
             if (!incompatible.isEmpty()) costTexts.add(
                     Component.translatable("widget.penchant.enchantment_slot.incompatible")
@@ -74,14 +74,15 @@ public class EnchantmentSlotWidget extends AbstractButton {
                             !hasEnoughBooks ? INSUFFICIENT_COLOR
                                     : BOOK_COLOR)
             );
-            if (showXpCost) costTexts.add(
+            costTexts.add(
                     Component.literal(Integer.toString(xpCost))
                             .withColor(!canUse ? DISABLED_COLOR :
                                     !hasEnoughXp ? INSUFFICIENT_COLOR
                                             : XP_COLOR)
             );
-            this.costText = ComponentUtils.formatList(costTexts, Component.literal(" "));
-        }
+            costText = ComponentUtils.formatList(costTexts, Component.literal(" "));
+        } else
+            costText = Component.empty();
 
         if (!canUse)
             setTooltip(Tooltip.create(Component.empty()
@@ -107,12 +108,10 @@ public class EnchantmentSlotWidget extends AbstractButton {
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.incompatible", ComponentUtils.formatList(incompatible, holder -> holder.value().description()))
                             .withStyle(ChatFormatting.RED));
 
-            tooltip
+            if (showCosts) tooltip
                     .append("\n")
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.book_requirement", bookRequirement)
-                            .withColor(hasEnoughBooks ? BOOK_COLOR : INSUFFICIENT_COLOR));
-
-            if (showXpCost) tooltip
+                            .withColor(hasEnoughBooks ? BOOK_COLOR : INSUFFICIENT_COLOR))
                     .append("\n")
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
                             .withColor(hasEnoughXp ? XP_COLOR : INSUFFICIENT_COLOR));

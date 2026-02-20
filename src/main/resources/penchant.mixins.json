@@ -24,7 +24,8 @@
     "leveling.EnchantWithLevelsFunctionMixin",
     "leveling.ItemStackMixin",
     "table.EnchantingTableBlockMixin",
-    "table.EnchantmentMenuMixin"
+    "table.EnchantmentMenuMixin",
+    "test.CrossbowItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
